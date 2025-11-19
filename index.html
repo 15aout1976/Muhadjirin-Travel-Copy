@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="page-title">Loading...</title>
-  <meta name="description" id="meta-description" content="Loading..." />
-  <meta name="keywords" id="meta-keywords" content="Loading..." />
+  <title id="page-title">وكالة المهاجرين ترافل | رحلات العمرة المميزة</title>
+  <meta name="description" id="meta-description" content="احجز رحلة العمرة مع وكالة المهاجرين ترافل. خدمات متكاملة، أسعار تنافسية، وتجربة روحية لا تُنسى. اتصل بنا الآن!" />
+  <meta name="keywords" id="meta-keywords" content="عمرة, رحلات عمرة, حج, سياحة دينية, المهاجرين ترافل, باقات عمرة, حجز عمرة, تأشيرة عمرة" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="config.js"></script>
   <style>
     :root {
       /* --- LOGO MAIN COLORS --- */
@@ -47,6 +46,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
+      position: relative;
     }
 
     .btn {
@@ -136,6 +136,14 @@
       border: 0;
     }
 
+    #bg-canvas {
+      display: none; /* إخفاء الكانفاس بعد إزالة Three.js */
+    }
+    
+    section {
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
     header {
       background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
       color: white;
@@ -145,9 +153,11 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 6px 20px rgba(0, 45, 98, 0.25); 
+      box-shadow: 0 6px 20px rgba(0, 45, 98, 0.25);
       transition: transform 0.4s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transform: translateZ(0); /* Ensure fixed header is on its own layer */
     }
 
     /* EXISTING CLASS FOR SCROLL-HIDE IS 'header-hidden' */
@@ -168,18 +178,20 @@
       gap: 18px;
     }
     
-    /* New style for the logo image */
     .logo-img {
-      height: 70px; /* Logo image height */
+      height: 70px;
       width: auto;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--secondary);
-      margin-right: -10px; /* Optional: adjust spacing */
-      /* NEW: Add a drop shadow to make the logo pop on the dark header */
+      margin-right: -10px;
       filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
-      /* NEW: Pulsing animation */
       animation: logo-pulse 2s infinite;
+      transition: transform 0.5s ease;
+    }
+
+    .logo-img:hover {
+      transform: rotateY(0deg) scale(1.05); /* تعديل تأثير 3D إلى تأثير Scale عادي */
     }
 
     @keyframes logo-pulse {
@@ -229,11 +241,27 @@
       padding: 8px 12px;
       border-radius: 8px;
       font-size: 1.05rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--secondary);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover:before {
+      width: 100%;
     }
 
     nav a:hover {
       color: var(--secondary);
-      background: rgba(255, 255, 255, 0.12);
     }
 
     .header-contact {
@@ -275,13 +303,13 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.4s ease;
-      box-shadow: 0 5px 18px rgba(255, 153, 0, 0.4); /* Shadow adjusted to Orange/Gold */
+      box-shadow: 0 5px 18px rgba(255, 153, 0, 0.4);
       font-size: 1.05rem;
     }
 
     .cta-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 22px rgba(255, 153, 0, 0.6); /* Shadow adjusted to Orange/Gold */
+      box-shadow: 0 8px 22px rgba(255, 153, 0, 0.6);
     }
 
     .mobile-menu-toggle {
@@ -307,6 +335,8 @@
       transform: translateX(100%);
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       overflow-y: auto;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .mobile-nav.active {
@@ -381,17 +411,16 @@
       display: block;
     }
 
+    /* Enhanced Hero Section */
     .hero {
-      /* Remove background image and gradient */
-      background: none;
-      color: white;
-      padding: 180px 0 120px;
+      /* تعديل الهامش العلوي لضمان عدم تغطية المحتوى بالهيدر الثابت بعد إزالة الـ 3D*/
+      padding: 180px 0 120px; 
       text-align: center;
       position: relative;
-      background-color: var(--primary); /* Use primary color as fallback */
+      background: linear-gradient(135deg, var(--primary), var(--gradient-end));
+      overflow: hidden;
     }
     
-    /* Updated hero background with logo only */
     .hero::before {
       content: '';
       position: absolute;
@@ -399,21 +428,30 @@
       left: 0;
       width: 100%;
       height: 100%;
-      /* Use logo.png for the background */
-      background-image: url('logo.png'); 
+      /* --- التعديل: استخدام الشعار الفعلي كخلفية خفية --- */
+      background-image: url('Logo.png'); 
       background-repeat: no-repeat;
       background-position: center;
-      background-size: contain; 
-      opacity: 0.8; /* Make it subtle */
-      z-index: 0; 
+      /* تم تصغير الشعار ليلائم خلفية الـ hero */
+      background-size: 45%; 
+      /* تم تخفيف الشفافية */
+      opacity: 0.06; 
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
     }
 
     .hero-content {
       max-width: 850px;
       margin: 0 auto;
       animation: fadeInUp 1.2s ease;
-      position: relative; 
-      z-index: 1; 
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes fadeInUp {
@@ -447,6 +485,7 @@
       flex-wrap: wrap;
     }
 
+    /* Enhanced Features Section */
     .features {
       padding: 100px 0;
       background: white;
@@ -468,6 +507,7 @@
       border: 1px solid #f0f0f0;
       position: relative;
       overflow: hidden;
+      transform: none; /* إلغاء الـ 3D هنا */
     }
 
     .feature-card::before {
@@ -477,12 +517,18 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url('logo.png');
+      /* --- التعديل: استخدام الشعار الفعلي كخلفية خفية في البطاقات --- */
+      background-image: url('Logo.png'); 
       background-repeat: no-repeat;
       background-position: center;
-      background-size: contain;
-      opacity: 0.15; /* Medium opacity */
+      /* تم تصغير الشعار ليلائم البطاقة */
+      background-size: 80%; 
+      /* تقليل الشفافية لجعله 'خفياً' */
+      opacity: 0.08; 
       z-index: 0;
+      /* إضافة انتقال للحركة */
+      transition: transform 0.6s ease-out, opacity 0.6s ease;
+      transform: scale(1);
     }
 
     .feature-card > * {
@@ -491,15 +537,20 @@
     }
 
     .feature-card:hover {
-      transform: translateY(-12px);
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 18px 40px rgba(0, 45, 98, 0.12); 
+      /* تأثير الحركة 3D على البطاقة نفسها */
+      transform: translateY(-12px); /* تحويله إلى تأثير 2D */
+      box-shadow: 0 18px 40px rgba(0, 45, 98, 0.12);
+    }
+    
+    .feature-card:hover::before {
+      /* حركة خفية للشعار داخل البطاقة عند التحويم */
+      transform: scale(1.1) rotate(5deg); 
+      opacity: 0.15;
     }
 
     .feature-icon {
       width: 90px;
       height: 90px;
-      /* Background adjusted from green/gold to primary/secondary colors */
       background: linear-gradient(135deg, rgba(0, 45, 98, 0.1), rgba(255, 153, 0, 0.15));
       border-radius: 50%;
       display: flex;
@@ -508,8 +559,13 @@
       margin: 0 auto 25px;
       color: var(--primary);
       font-size: 2.2rem;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 4px 12px rgba(0, 45, 98, 0.08); 
+      box-shadow: 0 4px 12px rgba(0, 45, 98, 0.08);
+      transition: all 0.4s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: scale(1.1) rotateY(0deg); /* تعديل تأثير 3D إلى تأثير Scale عادي */
+      background: linear-gradient(135deg, rgba(0, 45, 98, 0.2), rgba(255, 153, 0, 0.25));
     }
 
     .feature-card h3 {
@@ -519,10 +575,10 @@
       font-weight: 700;
     }
 
+    /* Enhanced Packages Section */
     .packages {
       padding: 100px 0;
-      /* Background adjusted from green to primary color */
-      background: linear-gradient(to bottom, #fbfbfb, #f0f3f5); 
+      background: linear-gradient(to bottom, #fbfbfb, #f0f3f5);
     }
 
     .packages-grid {
@@ -538,12 +594,12 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
       transition: all 0.4s ease;
       position: relative;
+      transform: none; /* إلغاء الـ 3D هنا */
     }
 
     .package-card:hover {
-      transform: translateY(-12px);
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 20px 50px rgba(0, 45, 98, 0.18); 
+      transform: translateY(-12px); /* تحويله إلى تأثير 2D */
+      box-shadow: 0 20px 50px rgba(0, 45, 98, 0.18);
     }
 
     .package-header {
@@ -595,12 +651,11 @@
     .package-card.featured {
       transform: scale(1.06);
       border: 3px solid var(--secondary);
-      /* Shadow adjusted from gold to secondary color */
-      box-shadow: 0 0 0 4px rgba(255, 153, 0, 0.15); 
+      box-shadow: 0 0 0 4px rgba(255, 153, 0, 0.15);
     }
 
-    .package-card.featured .package-header {
-      background: linear-gradient(135deg, var(--secondary), #E08700);
+    .package-card.featured:hover {
+      transform: translateY(-12px) scale(1.06); /* تحويله إلى تأثير 2D */
     }
 
     .badge {
@@ -615,8 +670,16 @@
       left: 25px;
       z-index: 3;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      animation: badge-pulse 2s infinite;
     }
 
+    @keyframes badge-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Enhanced Steps Section */
     .steps {
       padding: 100px 0;
       background: white;
@@ -651,8 +714,13 @@
       margin: 0 auto 25px;
       position: relative;
       z-index: 2;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 6px 15px rgba(0, 45, 98, 0.3); 
+      box-shadow: 0 6px 15px rgba(0, 45, 98, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .step:hover .step-number {
+      transform: scale(1.1) rotateY(0deg); /* تعديل تأثير 3D إلى تأثير Scale عادي */
+      box-shadow: 0 8px 20px rgba(0, 45, 98, 0.4);
     }
 
     .step:not(:last-child):after {
@@ -673,10 +741,10 @@
       font-weight: 700;
     }
 
+    /* Enhanced Testimonials */
     .testimonials {
       padding: 100px 0;
-      /* Background adjusted from green to primary color */
-      background: linear-gradient(to bottom, #f0f3f5, #fbfbfb); 
+      background: linear-gradient(to bottom, #f0f3f5, #fbfbfb);
     }
 
     .testimonials-grid {
@@ -692,13 +760,18 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
       position: relative;
       border-top: 4px solid var(--secondary);
+      transition: all 0.4s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-10px) rotateX(0deg); /* تعديل تأثير 3D إلى تأثير 2D */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
     .testimonial-card:before {
       content: '"';
       font-size: 5.5rem;
-      /* Color adjusted to secondary color */
-      color: rgba(255, 153, 0, 0.1); 
+      color: rgba(255, 153, 0, 0.1);
       position: absolute;
       top: 15px;
       right: 30px;
@@ -731,6 +804,11 @@
       color: white;
       font-weight: bold;
       font-size: 1.4rem;
+      transition: all 0.4s ease;
+    }
+
+    .testimonial-card:hover .author-avatar {
+      transform: scale(1.1) rotate(10deg);
     }
 
     .author-info h4 {
@@ -744,6 +822,7 @@
       font-size: 1rem;
     }
 
+    /* Enhanced Media Gallery */
     .media-gallery {
       padding: 100px 0;
       background: white;
@@ -773,8 +852,7 @@
     .gallery-tab.active {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 5px 15px rgba(0, 45, 98, 0.2); 
+      box-shadow: 0 5px 15px rgba(0, 45, 98, 0.2);
     }
 
     .gallery-tab:hover:not(.active) {
@@ -797,9 +875,8 @@
     }
 
     .gallery-item:hover {
-      transform: translateY(-8px);
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 15px 30px rgba(0, 45, 98, 0.2); 
+      transform: translateY(-8px) rotateX(0deg) rotateY(0deg); /* تعديل تأثير 3D إلى تأثير 2D */
+      box-shadow: 0 15px 30px rgba(0, 45, 98, 0.2);
     }
 
     .gallery-item img, .gallery-item video {
@@ -818,8 +895,7 @@
       bottom: 0;
       right: 0;
       left: 0;
-      /* Background adjusted from green to primary color */
-      background: linear-gradient(to top, rgba(0, 45, 98, 0.85), transparent); 
+      background: linear-gradient(to top, rgba(0, 45, 98, 0.85), transparent);
       color: white;
       padding: 25px;
       transform: translateY(100%);
@@ -854,6 +930,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      z-index: 10;
       transition: all 0.4s ease;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
@@ -873,10 +950,10 @@
       margin-top: 45px;
     }
 
+    /* Enhanced FAQ Section */
     .faq-section {
       padding: 100px 0;
-      /* Background adjusted from green to primary color */
-      background: #f9fbf9; 
+      background: #f9fbf9;
     }
 
     .faq-item {
@@ -884,6 +961,12 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      transform: translateY(-5px); /* تعديل تأثير 3D إلى تأثير 2D */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
 
     .faq-question {
@@ -900,8 +983,7 @@
     }
 
     .faq-question:hover {
-      /* Background adjusted from green to primary color */
-      background: #f0f4f8; 
+      background: #f0f4f8;
     }
 
     .faq-answer {
@@ -923,38 +1005,40 @@
       transition: transform 0.3s ease;
     }
 
-     .map-section {
-    padding: 60px 0;
-    background: white;
-  }
-
-  .map-container {
-    height: 400px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 1s ease;
-  }
-
-  .map-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @media (max-width: 768px) {
-    .map-container {
-      height: 300px;
+    /* Enhanced Map Section */
+    .map-section {
+      padding: 60px 0;
+      background: white;
     }
-  }
 
-  @media (max-width: 480px) {
     .map-container {
-      height: 250px;
+      height: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
     }
-  }
 
+    .map-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .map-container {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .map-container {
+        height: 250px;
+      }
+    }
+
+    /* Enhanced Contact Section */
     .contact {
       padding: 100px 0;
       background: white;
@@ -976,13 +1060,17 @@
       display: flex;
       align-items: flex-start;
       gap: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .contact-item:hover {
+      transform: translateX(-10px); /* تعديل تأثير 3D إلى تأثير 2D */
     }
 
     .contact-icon {
       width: 60px;
       height: 60px;
-      /* Background adjusted from green/gold to primary/secondary colors */
-      background: linear-gradient(135deg, rgba(0, 45, 98, 0.12), rgba(255, 153, 0, 0.08)); 
+      background: linear-gradient(135deg, rgba(0, 45, 98, 0.12), rgba(255, 153, 0, 0.08));
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -990,8 +1078,13 @@
       color: var(--primary);
       font-size: 1.4rem;
       flex-shrink: 0;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 4px 10px rgba(0, 45, 98, 0.08); 
+      box-shadow: 0 4px 10px rgba(0, 45, 98, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .contact-item:hover .contact-icon {
+      transform: scale(1.1) rotate(10deg);
+      background: linear-gradient(135deg, rgba(0, 45, 98, 0.2), rgba(255, 153, 0, 0.15));
     }
 
     .contact-details h4 {
@@ -1001,11 +1094,16 @@
     }
 
     .contact-form {
-      /* Background and border adjusted from green to primary color */
-      background: #f9fbf9; 
+      background: #f9fbf9;
       padding: 35px;
       border-radius: 16px;
-      border: 1px solid #eef0f5; 
+      border: 1px solid #eef0f5;
+      transition: all 0.4s ease;
+    }
+
+    .contact-form:hover {
+      transform: translateY(-5px) rotateX(0deg); /* تعديل تأثير 3D إلى تأثير 2D */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     .form-group {
@@ -1023,8 +1121,7 @@
     .form-control {
       width: 100%;
       padding: 14px 18px;
-      /* Border adjusted from green to primary color */
-      border: 1px solid #d5dce5; 
+      border: 1px solid #d5dce5;
       border-radius: 10px;
       font-size: 1.05rem;
       transition: all 0.3s ease;
@@ -1033,27 +1130,30 @@
 
     .form-control:focus {
       border-color: var(--secondary);
-      /* Shadow adjusted to secondary color */
-      box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2); 
+      box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2);
       outline: none;
+      transform: translateZ(0);
     }
 
+    /* Enhanced Footer */
     footer {
       background: linear-gradient(135deg, var(--gradient-start), var(--primary));
       color: white;
       padding: 70px 0 30px;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
     
-    /* FIX: ADDED MISSING FOOTER-CONTAINER LAYOUT */
+    footer:hover {
+        transform: none; /* إلغاء الـ 3D هنا */
+    }
+
     .footer-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 50px;
       padding-bottom: 40px;
     }
-    /* END FIX */
 
-    /* New style for footer logo */
     .footer-logo-container {
       display: flex;
       align-items: center;
@@ -1061,12 +1161,21 @@
       margin-bottom: 22px;
     }
 
-    .footer-logo-container img {
-      height: 60px; /* Adjust size as needed */
+    .footer-logo {
+      height: 60px;
       width: auto;
-      /* Required: The footer logo must use logo.jpg */
-      /* Optional: Adjust for visibility on dark background */
-      filter: drop-shadow(0 0 8px rgba(255, 153, 0, 0.5)); 
+      filter: drop-shadow(0 0 8px rgba(255, 153, 0, 0.5));
+      
+      /* NEW: Applied Header Logo Animation and Style */
+      border-radius: 50%;
+      border: 3px solid var(--secondary);
+      animation: logo-pulse 2s infinite;
+      transition: transform 0.5s ease;
+    }
+    
+    .footer-logo:hover {
+      /* NEW: Applied Header Logo Hover */
+      transform: rotateY(0deg) scale(1.05); /* تعديل تأثير 3D إلى تأثير Scale عادي */
     }
 
     .footer-col h3 {
@@ -1097,8 +1206,7 @@
     }
 
     .footer-col a {
-      /* Color adjusted from green to blue */
-      color: #e0e5f0; 
+      color: #e0e5f0;
       text-decoration: none;
       transition: all 0.3s ease;
       font-weight: 500;
@@ -1130,7 +1238,7 @@
 
     .social-links a:hover {
       background: var(--secondary);
-      transform: translateY(-4px);
+      transform: translateY(-4px) rotate(10deg);
       color: var(--primary);
     }
 
@@ -1142,12 +1250,13 @@
       color: #ccc;
     }
 
+    /* Enhanced Floating Elements */
     .whatsapp-float {
       position: fixed;
       width: 70px;
       height: 70px;
       bottom: 30px;
-      left: 30px;
+      left: 30px; /* Default Desktop Position */
       background: linear-gradient(135deg, var(--whatsapp), #128C7E);
       color: #FFF;
       border-radius: 50%;
@@ -1163,19 +1272,13 @@
     }
 
     .whatsapp-float:hover {
-      transform: scale(1.15) rotate(10deg);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-      70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+      transform: scale(1.15) rotate(10deg); /* تعديل تأثير 3D إلى تأثير 2D */
     }
 
     .scroll-top {
       position: fixed;
       bottom: 110px;
-      left: 30px;
+      left: 30px; /* Default Desktop Position */
       width: 55px;
       height: 55px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -1188,8 +1291,7 @@
       z-index: 99;
       opacity: 0;
       transition: all 0.4s ease;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 5px 15px rgba(0, 45, 98, 0.3); 
+      box-shadow: 0 5px 15px rgba(0, 45, 98, 0.3);
     }
 
     .scroll-top.visible {
@@ -1197,13 +1299,14 @@
     }
 
     .scroll-top:hover {
-      transform: translateY(-5px) rotate(5deg);
+      transform: translateY(-5px) rotate(5deg); /* تعديل تأثير 3D إلى تأثير 2D */
     }
 
+    /* Enhanced Chatbot */
     .chatbot-container {
       position: fixed;
       bottom: 30px;
-      right: 30px;
+      right: 30px; /* Default Desktop Position */
       z-index: 1000;
     }
 
@@ -1216,10 +1319,11 @@
       justify-content: center;
       font-size: 26px;
       cursor: pointer;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 6px 25px rgba(0, 45, 98, 0.4); 
+      box-shadow: 0 6px 25px rgba(0, 45, 98, 0.4);
       transition: all 0.4s ease;
       animation: bounce 2s infinite;
+      width: 60px; /* fixed size */
+      height: 60px; /* fixed size */
     }
 
     @keyframes bounce {
@@ -1229,7 +1333,7 @@
     }
 
     .chatbot-button:hover {
-      transform: scale(1.15);
+      transform: scale(1.15); /* تعديل تأثير 3D إلى تأثير 2D */
     }
 
     .chatbot-window {
@@ -1240,14 +1344,103 @@
       height: 520px;
       background: white;
       border-radius: 20px;
-      /* Shadow adjusted from green to primary color */
-      box-shadow: 0 10px 40px rgba(0, 45, 98, 0.25); 
+      box-shadow: 0 10px 40px rgba(0, 45, 98, 0.25);
       display: none;
       flex-direction: column;
       overflow: hidden;
       border: 1px solid #e0e0e0;
+      transform: perspective(1000px) rotateX(0) rotateY(0) translateZ(0);
+      transition: all 0.4s ease;
     }
 
+    .chatbot-window.active {
+      display: flex;
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px); /* تعديل تأثير 3D إلى تأثير 2D */
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .package-card.featured { transform: scale(1); }
+      .step:not(:last-child):after { display: none; }
+      /* Disable subtle section 3D hover on smaller screens for performance */
+      section:hover {
+          transform: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-top: var(--header-height);
+      }
+      .desktop-nav { display: none; }
+      .mobile-menu-toggle { display: block; }
+      .header-contact { display: none; }
+      
+      /* 🌟 إصلاحات الأزرار العائمة للجوال: الواتساب يسار، الشات بوت يمين 🌟 */
+      .whatsapp-float {
+        bottom: 20px;
+        left: 20px; /* الواتساب يسار */
+        right: auto;
+      }
+      
+      .chatbot-container { 
+        left: auto; 
+        right: 20px; /* الشات بوت يمين */
+        bottom: 20px;
+      }
+      
+      /* يجب تعديل مكان نافذة الشات بوت عند وضع الزر في اليمين */
+      .chatbot-window {
+          right: 0; /* يبدأ من يمين الزر */
+          left: auto;
+      }
+      
+      .scroll-top { 
+        /* يجب أن يكون زر العودة للأعلى فوق الواتساب والشات بوت */
+        right: auto; 
+        left: 20px; /* لجعله يظهر يسار الشاشة فوق الواتساب */
+        bottom: 100px;
+      }
+      /* 🌟 نهاية إصلاحات الأزرار العائمة 🌟 */
+      
+      .hero h2 { font-size: 2.6rem; }
+      .hero p { font-size: 1.2rem; }
+
+      .footer-col {
+          text-align: center;
+      }
+      .footer-col h3:after {
+          right: 50%;
+          transform: translateX(50%);
+      }
+      .social-links {
+          justify-content: center;
+      }
+      .footer-logo-container {
+           justify-content: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 320px; }
+      .steps-container { flex-direction: column; gap: 45px; }
+      .gallery-tabs { flex-direction: column; align-items: center; }
+      .gallery-tab { width: 100%; max-width: 260px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .section-title h2 { font-size: 2.3rem; }
+      
+      /* 🌟 إصلاح عرض Chatbot على الجوال 🌟 */
+      .chatbot-window {
+        width: 90%;
+        max-width: 340px;
+        right: 15px; /* تثبيت الموضع ليكون في يمين الشاشة مع هامش */
+        left: auto;
+      }
+      /* 🌟 نهاية إصلاح عرض Chatbot على الجوال 🌟 */
+    }
+    
+    /* ... Chatbot window CSS remains the same ... */
     .chatbot-header {
       background: linear-gradient(135deg, var(--primary), var(--gradient-end));
       color: white;
@@ -1289,11 +1482,11 @@
       border-radius: 20px;
       font-size: 14px;
       line-height: 1.6;
+      transition: all 0.3s ease;
     }
 
     .bot-message {
-      /* Background adjusted from green to primary color */
-      background: #f0f4f8; 
+      background: #f0f4f8;
       color: #222;
       align-self: flex-start;
       border-bottom-right-radius: 6px;
@@ -1314,8 +1507,7 @@
     }
 
     .quick-question {
-      /* Background adjusted from green to primary color */
-      background: #e8f0f8; 
+      background: #e8f0f8;
       border: none;
       border-radius: 22px;
       padding: 10px 18px;
@@ -1327,8 +1519,7 @@
     }
 
     .quick-question:hover {
-      /* Background adjusted from green to primary color */
-      background: #d4e0ed; 
+      background: #d4e0ed;
       transform: translateY(-2px);
     }
 
@@ -1366,63 +1557,18 @@
     .chatbot-input button:hover {
       transform: scale(1.1);
     }
-
-    @media (max-width: 992px) {
-      .package-card.featured { transform: scale(1); }
-      .step:not(:last-child):after { display: none; }
-    }
-
-    @media (max-width: 768px) {
-      /* Update the body padding-top for mobile fixed header */
-      body {
-        padding-top: var(--header-height);
-      }
-      .desktop-nav { display: none; }
-      .mobile-menu-toggle { display: block; }
-      .header-contact { display: none; }
-      .chatbot-container { right: 20px; bottom: 90px; }
-      .whatsapp-float { bottom: 20px; left: 20px; }
-      .scroll-top { left: 20px; bottom: 90px; }
-      .hero h2 { font-size: 2.6rem; }
-      .hero p { font-size: 1.2rem; }
-
-      /* FOOTER MOBILE ADJUSTMENTS */
-      .footer-col {
-          text-align: center; /* Center footer content on mobile */
-      }
-      .footer-col h3:after {
-          right: 50%;
-          transform: translateX(50%); /* Center the underline */
-      }
-      .social-links {
-          justify-content: center; /* Center social icons */
-      }
-      .footer-logo-container {
-           justify-content: center; /* Center logo and name */
-      }
-      /* END FOOTER MOBILE ADJUSTMENTS */
-    }
-
-    @media (max-width: 576px) {
-      .hero-buttons { flex-direction: column; align-items: center; }
-      .btn { width: 100%; max-width: 320px; }
-      .steps-container { flex-direction: column; gap: 45px; }
-      .gallery-tabs { flex-direction: column; align-items: center; }
-      .gallery-tab { width: 100%; max-width: 260px; }
-      .gallery-grid { grid-template-columns: 1fr; }
-      .section-title h2 { font-size: 2.3rem; }
-    }
   </style>
 </head>
 <body>
+  
   <a href="#main-content" class="sr-only">انتقل إلى المحتوى الرئيسي</a>
   <header id="mainHeader">
     <div class="container header-container">
       <div class="logo">
-        <img src="logo.png" alt="Logo Icon" class="logo-img" id="logo-icon-img">
+        <img src="Logo.png" alt="Logo Icon" class="logo-img" id="logo-icon-img">
         <div>
-          <h1 id="agency-name">Loading...</h1>
-          <span id="agency-tagline">Loading...</span>
+          <h1 id="agency-name">وكالة المهاجرين ترافل</h1>
+          <span id="agency-tagline">معتمرونا... أمانة بين أيدينا</span>
         </div>
       </div>
       <nav class="desktop-nav" aria-label="القائمة الرئيسية">
@@ -1447,13 +1593,14 @@
       </button>
     </div>
   </header>
+  
   <div class="overlay" id="overlay"></div>
   <nav class="mobile-nav" id="mobileNav" aria-label="القائمة الرئيسية للجوال">
     <button class="mobile-nav-close" id="mobileNavClose" aria-label="إغلاق القائمة">
       <i class="fas fa-times" aria-hidden="true"></i>
     </button>
     <div class="mobile-nav-logo">
-      <img src="logo.png" alt="Logo" class="mobile-logo-img">
+      <img src="Logo.png" alt="Logo" class="mobile-logo-img">
     </div>
     <ul>
       <li><a href="#الرئيسية">الرئيسية</a></li>
@@ -1469,6 +1616,7 @@
       <li><button class="cta-button" style="width:100%;margin-top:10px;">احجز الآن</button></li>
     </ul>
   </nav>
+  
   <section class="hero" id="الرئيسية">
     <div class="container hero-content">
       <h2 id="hero-title">معتمرونا... أمانة بين أيدينا</h2>
@@ -1482,46 +1630,18 @@
       </div>
     </div>
   </section>
+  
   <section class="features" id="من-نحن">
     <div class="container">
       <div class="section-title">
         <h2>لماذا تختار وكالة المهاجرين ترافل؟</h2>
         <p>نفخر في وكالة المهاجرين ترافل بأننا شريكك الموثوق في رحلتك الروحية، نضمن لك تجربة عمرة ميسرة وخالية من المتاعب</p>
       </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-award"></i></div>
-          <h3>خبرة طويلة</h3>
-          <p>نتمتع بخبرة تمتد لسنوات في تنظيم رحلات العمرة باحترافية عالية</p>
+      <div class="features-grid" id="features-container">
         </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-certificate"></i></div>
-          <h3>تراخيص رسمية</h3>
-          <p>نحن شركة معتمدة من الجهات الرسمية ذات الصلة، مما يضمن لك تعاملًا آمنًا ومضمونًا</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-concierge-bell"></i></div>
-          <h3>خدمات متكاملة</h3>
-          <p>نقدم باقة شاملة تشمل التأشيرات، الحجوزات، النقل، والإقامة لتوفر عليك عناء الترتيبات</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-user-friends"></i></div>
-          <h3>مرشدون دينيون</h3>
-          <p>نضع بين يديك مرشدين دينيين متخصصين ليرشدوك خلال أداء المناسك</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-headset"></i></div>
-          <h3>دعم 24/7</h3>
-          <p>فريق دعم متواجد على مدار الساعة لمساعدتك في أي استفسار أو طوارئ خلال رحلتك</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-hand-holding-usd"></i></div>
-          <h3>أسعار تنافسية</h3>
-          <p>نقدم أفضل الخدمات بأسعار تنافسية مع مرونة في الدفع وتقسيط ميسر</p>
-        </div>
-      </div>
     </div>
   </section>
+  
   <section class="packages" id="باقاتنا">
     <div class="container">
       <div class="section-title">
@@ -1532,6 +1652,7 @@
         </div>
     </div>
   </section>
+  
   <section class="steps" id="خدماتنا">
     <div class="container">
       <div class="section-title">
@@ -1547,37 +1668,18 @@
       </div>
     </div>
   </section>
+  
   <section class="testimonials">
     <div class="container">
       <div class="section-title">
         <h2>آراء عملائنا</h2>
         <p>انطباعات وتجارب حقيقية من عملائنا الكرام</p>
       </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="testimonial-text">"كنت خائفة من أول مرة أذهب فيها للعمرة، لكني فضلت التعامل مع وكالة المهاجرين ترافل، وكانت تجربة لن أنساها أبدًا..."</div>
-          <div class="testimonial-author">
-            <div class="author-avatar">ف</div>
-            <div class="author-info"><h4>فاطمة أحمد</h4><p>باتنة</p></div>
-          </div>
+      <div class="testimonials-grid" id="testimonials-container">
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-text">"أداء العمرة مع وكالة المهاجرين ترافل كان حلماً تحقق. شعرت أنني في بيت، لا في رحلة..."</div>
-          <div class="testimonial-author">
-            <div class="author-avatar">م</div>
-            <div class="author-info"><h4>محمد عبد الله</h4><p>المسيلة</p></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-text">"رحلة العمرة مع وكالة المهاجرين ترافل كانت من أفضل التجارب في حياتي..."</div>
-          <div class="testimonial-author">
-            <div class="author-avatar">ع</div>
-            <div class="author-info"><h4>عبد الصمد محمود</h4><p>الجزائر العاصمة</p></div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
+  
   <section class="media-gallery" id="معرض-الوسائط">
     <div class="container">
       <div class="section-title">
@@ -1586,54 +1688,49 @@
       </div>
       <div class="gallery-tabs">
         <button class="gallery-tab active" data-filter="all">الكل</button>
-        <button class="gallery-tab" data-filter="photos">الصور</button>
-        <button class="gallery-tab" data-filter="videos">الفيديوهات</button>
-        <button class="gallery-tab" data-filter="trips">رحلات العمرة</button>
+        <button class="gallery-tab" data-filter="photo">الصور</button>
+        <button class="gallery-tab" data-filter="video">الفيديوهات</button>
+        <button class="gallery-tab" data-filter="trip">رحلات العمرة</button>
       </div>
-      <div class="gallery-grid" id="drive-gallery-grid"></div>
+      <div class="gallery-grid" id="drive-gallery-grid">
+        </div>
       <div class="gallery-load-more">
         <button class="cta-button" id="load-more-btn" style="display:none;">شاهد المزيد</button>
       </div>
     </div>
   </section>
+  
   <section class="faq-section" id="الأسئلة-الشائعة">
     <div class="container">
       <div class="section-title">
         <h2>الأسئلة الشائعة</h2>
         <p>إجابات على أكثر الأسئلة شيوعاً حول رحلات العمرة</p>
       </div>
-      <div class="faq-container">
-        <div class="faq-item">
-          <div class="faq-question">ما هي الوثائق المطلوبة للحصول على تأشيرة العمرة؟<i class="fas fa-chevron-down"></i></div>
-          <div class="faq-answer"><p>الوثائق المطلوبة هي: جواز سفر ساري المفعول...</p></div>
+      <div class="faq-container" id="faq-container">
         </div>
-        <div class="faq-item"><div class="faq-question">كم تستغرق مدة استخراج تأشيرة العمرة؟<i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>عادةً ما تستغرق عملية استخراج التأشيرة من 3 إلى 7 أيام عمل...</p></div></div>
-        <div class="faq-item"><div class="faq-question">هل يمكنني تعديل أو إلغاء الحجز؟<i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>نعم، يمكن تعديل أو إلغاء الحجز حسب الشروط...</p></div></div>
-        <div class="faq-item"><div class="faq-question">ما هي مدة رحلة العمرة النموذجية؟<i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>مدة الرحلة النموذجية تتراوح بين 10 إلى 15 يومًا...</p></div></div>
-        <div class="faq-item"><div class="faq-question">هل تقدمون خدمة التقسيط؟<i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>نعم، نقدم خيارات متعددة للدفع تشمل الدفع الكامل والتقسيط...</p></div></div>
-        <div class="faq-item"><div class="faq-question">ما هي مزايا السفر مع مجموعة؟<i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>السفر مع مجموعة يوفر لك مرشدًا دينيًا مرافقًا...</p></div></div>
+    </div>
+  </section>
+  
+  <section class="map-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>موقعنا</h2>
+        <p>زورونا في مكتبنا لتخطيط رحلتكم الروحية</p>
+      </div>
+      <div class="map-container fade-in" id="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000!2d6.1770!3d35.5539!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDEyJzQzLjgiTiA2wrAxMCczMC43IkU!5e0!3m2!1sar!2sdz!4v1639070000000"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
     </div>
   </section>
-  <section class="map-section">
-  <div class="container">
-    <div class="section-title">
-      <h2>موقعنا</h2>
-      <p>زورونا في مكتبنا لتخطيط رحلتكم الروحية</p>
-    </div>
-    <div class="map-container fade-in" id="map-container">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3250.3021191624065!2d6.172828615124325!3d35.564291180119594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12f411cff7ae9c8f%3A0x378d13e91645f8a1!2sAlmohajirin%20Travel!5e0!3m2!1sen!2sdz!4v1700431680000!5m2!1sen!2sdz"
-        width="100%"
-        height="100%"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-    </div>
-  </div>
-</section>
+  
   <section class="contact" id="اتصل-بنا">
     <div class="container">
       <div class="section-title">
@@ -1645,27 +1742,28 @@
           </div>
         <div class="contact-form">
           <h3 style="margin-bottom:22px;color:var(--primary);">أرسل لنا رسالة</h3>
-          <form>
-            <div class="form-group"><label for="name">الاسم الكامل</label><input type="text" id="name" class="form-control" placeholder="أدخل اسمك الكامل"></div>
-            <div class="form-group"><label for="phone">رقم الهاتف</label><input type="tel" id="phone" class="form-control" placeholder="أدخل رقم هاتفك"></div>
+          <form id="contact-form">
+            <div class="form-group"><label for="name">الاسم الكامل</label><input type="text" id="name" class="form-control" placeholder="أدخل اسمك الكامل" required></div>
+            <div class="form-group"><label for="phone">رقم الهاتف</label><input type="tel" id="phone" class="form-control" placeholder="أدخل رقم هاتفك" required></div>
             <div class="form-group"><label for="email">البريد الإلكتروني</label><input type="email" id="email" class="form-control" placeholder="أدخل بريدك الإلكتروني"></div>
-            <div class="form-group"><label for="package">اختر الباقة</label><select id="package" class="form-control"><option>اختر الباقة المناسبة</option><option>الباقة الأساسية</option><option>الباقة المميزة</option><option>الباقة الفاخرة</option></select></div>
-            <div class="form-group"><label for="message">الرسالة</label><textarea id="message" class="form-control" rows="4" placeholder="أدخل رسالتك هنا..."></textarea></div>
+            <div class="form-group"><label for="package">اختر الباقة</label><select id="package" class="form-control"><option>اختر الباقة المناسبة</option></select></div>
+            <div class="form-group"><label for="message">الرسالة</label><textarea id="message" class="form-control" rows="4" placeholder="أدخل رسالتك هنا..." required></textarea></div>
             <button type="submit" class="cta-button" style="width:100%;">أرسل الرسالة</button>
           </form>
         </div>
       </div>
     </div>
   </section>
+  
   <footer>
     <div class="container">
       <div class="footer-container">
         <div class="footer-col">
           <div class="footer-logo-container">
-             <img src="logo.png" alt="Logo Image" class="footer-logo">
-             <h3 id="footer-agency-name" style="margin:0;padding:0;border:none;">Loading...</h3>
+             <img src="Logo.png" alt="Logo Image" class="footer-logo">
+             <h3 id="footer-agency-name" style="margin:0;padding:0;border:none;">وكالة المهاجرين ترافل</h3>
           </div>
-          <p>نحوّل حلمك بأداء العمرة إلى واقع ميسر مع خدمات شاملة تغطي كل تفاصيل رحلتك من لحظة التفكير حتى العودة.</p>
+          <p>وكالة سفر متخصصة في تنظيم رحلات العمرة بأعلى معايير الجودة والراحة</p>
           <div class="social-links" id="social-links-footer">
             </div>
         </div>
@@ -1683,13 +1781,8 @@
         </div>
         <div class="footer-col">
           <h3>باقاتنا</h3>
-          <ul>
-            <li><a href="#باقاتنا">الباقة الأساسية</a></li>
-            <li><a href="#باقاتنا">الباقة المميزة</a></li>
-            <li><a href="#باقاتنا">الباقة الفاخرة</a></li>
-            <li><a href="#باقاتنا">عروض خاصة</a></li>
-            <li><a href="#باقاتنا">رحلات جماعية</a></li>
-          </ul>
+          <ul id="footer-packages-list">
+            </ul>
         </div>
         <div class="footer-col">
           <h3>اتصل بنا</h3>
@@ -1698,16 +1791,19 @@
         </div>
       </div>
       <div class="copyright">
-        <p id="copyright-text">Loading...</p>
+        <p id="copyright-text">جميع الحقوق محفوظة © 2023 وكالة المهاجرين ترافل</p>
       </div>
     </div>
   </footer>
+  
   <a href="#" class="whatsapp-float" id="whatsapp-float" target="_blank" aria-label="واتساب">
     <i class="fab fa-whatsapp" aria-hidden="true"></i>
   </a>
+  
   <div class="scroll-top" id="scrollTop" aria-label="الانتقال إلى الأعلى">
     <i class="fas fa-chevron-up" aria-hidden="true"></i>
   </div>
+  
   <div class="chatbot-container">
     <div class="chatbot-button" id="chatbotButton" aria-label="فتح المساعد الإفتراضي">
       <i class="fas fa-robot" aria-hidden="true"></i>
@@ -1718,18 +1814,233 @@
         <button class="chatbot-close" id="chatbotClose" aria-label="إغلاق النافذة"><i class="fas fa-times"></i></button>
       </div>
       <div class="chatbot-messages" id="chatbotMessages">
-        <div class="message bot-message" id="initial-bot-message">
-          </div>
-      </div>
+        </div>
       <div class="chatbot-input">
         <input type="text" id="chatbotInput" placeholder="اكتب رسالتك هنا...">
         <button id="chatbotSend" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button>
       </div>
     </div>
   </div>  
-   
+  
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    // Configuration File for Almohajirin Travel Agency Website
+    window.SHARQIA_CONFIG = {
+      // AGENCY INFORMATION
+      agency: {
+        name: "وكالة المهاجرين ترافل",
+        tagline: "معتمرونا... أمانة بين أيدينا",
+        copyrightYear: new Date().getFullYear(),
+        description: "وكالة سفر متخصصة في تنظيم رحلات العمرة بأعلى معايير الجودة والراحة"
+      },
+
+      // SEO SETTINGS
+      seo: {
+        title: "وكالة المهاجرين ترافل | رحلات العمرة المميزة",
+        description: "احجز رحلة العمرة مع وكالة المهاجرين ترافل. خدمات متكاملة، أسعار تنافسية، وتجربة روحية لا تُنسى. اتصل بنا الآن!",
+        keywords: "عمرة, رحلات عمرة, حج, سياحة دينية, المهاجرين ترافل, باقات عمرة, حجز عمرة, تأشيرة عمرة"
+      },
+
+      // CONTACT INFORMATION
+      contact: {
+        phone: "+213555123456",
+        whatsapp: "213555123456", // Without + or spaces
+        email: "info@almohajirin-travel.dz",
+        address: "شارع العربي بن مهيدي، باتنة، الجزائر",
+        workingHours: "السبت - الخميس: 9:00 صباحاً - 6:00 مساءً",
+        // 🌟 رابط الخريطة الجديد: استخدم رابط تضمين (Embed API) الخاص بموقعك 🌟
+        mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.67890!2d5.203102!3d35.558774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzvEmsDZAjUw4qWsNDc2!5e0!3m2!1sen!ar!4v1634567890123!5m2!1sen!ar"
+      },
+
+      // SOCIAL MEDIA LINKS
+      social: {
+        facebook: "https://facebook.com/almohajirin.travel",
+        instagram: "https://instagram.com/almohajirin.travel",
+        tiktok: "https://tiktok.com/@almohajirin.travel",
+        whatsapp: "https://wa.me/213555123456"
+      },
+
+      // PACKAGES CONFIGURATION
+      packages: [
+        {
+          id: 1,
+          name: "الباقة الأساسية",
+          price: "85,000 دج",
+          isFeatured: false,
+          description: "باقة اقتصادية مناسبة للعائلات",
+          features: [
+            "تأشيرة العمرة الإلكترونية",
+            "تذاكر طيران ذهاب وعودة",
+            "إقامة في فندق 3 نجوم (مكة والمدينة)",
+            "النقل بين المطار والفندق",
+            "وجبة إفطار يومية",
+            "تأمين صحي شامل",
+            "مرشد ديني مع المجموعة"
+          ]
+        },
+        {
+          id: 2,
+          name: "الباقة المميزة",
+          price: "120,000 دج",
+          isFeatured: true,
+          description: "الباقة الأكثر طلباً مع خدمات إضافية",
+          features: [
+            "تأشيرة العمرة الإلكترونية",
+            "تذاكر طيران درجة سياحية",
+            "إقامة في فندق 4 نجوم قريب من الحرم",
+            "النقل الفاخر بين المدن والمطارات",
+            "وجبتان يوميًا (إفطار وعشاء)",
+            "تأمين صحي شامل وسارية المفعول",
+            "مرشد ديني متخصص",
+            "زيارات للمعالم التاريخية",
+            "دعم متواصل 24/7"
+          ]
+        },
+        {
+          id: 3,
+          name: "الباقة الفاخرة",
+          price: "180,000 دج",
+          isFeatured: false,
+          description: "تجربة VIP مع أفضل الخدمات",
+          features: [
+            "تأشيرة العمرة الإلكترونية سريعة",
+            "تذاكر طيران درجة رجال الأعمال",
+            "إقامة في فندق 5 نجوم إطلالة على الحرم",
+            "سيارات خاصة فاخرة للتنقل",
+            "ثلاث وجبات فاخرة يوميًا",
+            "تأمين صحي VIP شامل",
+            "مرشد ديني خاص للمجموعة",
+            "برنامج سياحي متكامل",
+            "غرف مطلة على الحرم",
+            "خدمة استقبال خاصة في المطار",
+            "دعم شخصي مخصص 24/7"
+          ]
+        }
+      ],
+
+      // CHATBOT CONFIGURATION
+      chatbot: {
+        welcome: "أهلاً وسهلاً بك! 🌙\n\nكيف يمكنني مساعدتك اليوم في رحلتك الروحانية؟\nيمكنك الاستفسار عن الباقات، الأسعار، أو أي معلومات أخرى.",
+        
+        fallback: "عذراً، لم أفهم سؤالك تماماً. 🤔\n\nدعني أساعدك بشكل أفضل!",
+        
+        quickReplies: {
+          initial: ['الباقات المتاحة', 'الأسعار', 'معلومات الاتصال'],
+          packages: ['الأسعار', 'خطوات الحجز', 'الوثائق المطلوبة'],
+          prices: ['الباقات المتاحة', 'هل توفرون التقسيط؟', 'معلومات الاتصال'],
+          documents: ['خطوات الحجز', 'معلومات الاتصال', 'هل يمكنني الإلغاء؟'],
+          contact: ['الباقات المتاحة', 'خدماتنا', 'شكرا لك'],
+          services: ['الباقات المتاحة', 'خطوات الحجز', 'هل يوجد مرشد ديني؟'],
+          booking: ['الباقات المتاحة', 'الوثائق المطلوبة', 'معلومات الاتصال']
+        }
+      },
+
+      // FEATURES CONFIGURATION
+      features: [
+        {
+          icon: "fa-award",
+          title: "خبرة طويلة",
+          description: "نتمتع بخبرة تمتد لسنوات في تنظيم رحلات العمرة باحترافية عالية"
+        },
+        {
+          icon: "fa-certificate",
+          title: "تراخيص رسمية",
+          description: "نحن شركة معتمدة من الجهات الرسمية ذات الصلة، مما يضمن لك تعاملًا آمنًا ومضمونًا"
+        },
+        {
+          icon: "fa-concierge-bell",
+          title: "خدمات متكاملة",
+          description: "نقدم باقة شاملة تشمل التأشيرات، الحجوزات، النقل، والإقامة لتوفر عليك عناء الترتيبات"
+        },
+        {
+          icon: "fa-user-friends",
+          title: "مرشدون دينيون",
+          description: "نضع بين يديك مرشدين دينيين متخصصين ليرشدوك خلال أداء المناسك"
+        },
+        {
+          icon: "fa-headset",
+          title: "دعم 24/7",
+          description: "فريق دعم متواجد على مدار الساعة لمساعدتك في أي استفسار أو طوارئ خلال رحلتك"
+        },
+        {
+          icon: "fa-hand-holding-usd",
+          title: "أسعار تنافسية",
+          description: "نقدم أفضل الخدمات بأسعار تنافسية مع مرونة في الدفع وتقسيط ميسر"
+        }
+      ],
+
+      // TESTIMONIALS CONFIGURATION
+      testimonials: [
+        {
+          name: "فاطمة أحمد",
+          location: "باتنة",
+          avatar: "ف",
+          text: "كنت خائفة من أول مرة أذهب فيها للعمرة، لكني فضلت التعامل مع وكالة المهاجرين ترافل، وكانت تجربة لن أنساها أبدًا..."
+        },
+        {
+          name: "محمد عبد الله",
+          location: "المسيلة",
+          avatar: "م",
+          text: "أداء العمرة مع وكالة المهاجرين ترافل كان حلماً تحقق. شعرت أنني في بيت، لا في رحلة..."
+        },
+        {
+          name: "عبد الصمد محمود",
+          location: "الجزائر العاصمة",
+          avatar: "ع",
+          text: "رحلة العمرة مع وكالة المهاجرين ترافل كانت من أفضل التجارب في حياتي..."
+        }
+      ],
+
+      // FAQ CONFIGURATION
+      faq: [
+        {
+          question: "ما هي الوثائق المطلوبة للحصول على تأشيرة العمرة؟",
+          answer: "الوثائق المطلوبة هي: جواز سفر ساري المفعول لمدة 6 أشهر على الأقل، صورتان شخصيتان حديثتان بخلفية بيضاء، استمارة طلب التأشيرة، وشهادة التطعيم حسب متطلبات وزارة الصحة."
+        },
+        {
+          question: "كم تستغرق مدة استخراج تأشيرة العمرة؟",
+          answer: "عادةً ما تستغرق عملية استخراج التأشيرة من 3 إلى 7 أيام عمل من تاريخ استلام كافة المستندات المطلوبة."
+        },
+        {
+          question: "هل يمكنني تعديل أو إلغاء الحجز؟",
+          answer: "نعم، يمكن تعديل أو إلغاء الحجز حسب الشروط والأحكام المتفق عليها في عقد الحجز. يرجى التواصل معنا مباشرة لمعرفة التفاصيل."
+        },
+        {
+          question: "ما هي مدة رحلة العمرة النموذجية؟",
+          answer: "مدة الرحلة النموذجية تتراوح بين 10 إلى 15 يومًا، تشمل الإقامة في مكة المكرمة والمدينة المنورة."
+        },
+        {
+          question: "هل تقدمون خدمة التقسيط؟",
+          answer: "نعم، نقدم خيارات متعددة للدفع تشمل الدفع الكامل والتقسيط الميسر. يرجى التواصل معنا لمعرفة خطط التقسيط المتاحة."
+        },
+        {
+          question: "ما هي مزايا السفر مع مجموعة؟",
+          answer: "السفر مع مجموعة يوفر لك مرشدًا دينيًا مرافقًا، أسعار أفضل، تنظيم احترافي، ورفقة طيبة خلال الرحلة الروحانية."
+        }
+      ],
+
+      // HERO SECTION CONFIGURATION
+      hero: {
+        title: "معتمرونا... أمانة بين أيدينا",
+        subtitle: "نحوّل حلمك بأداء العمرة إلى واقع ميسر مع خدمات شاملة تغطي كل تفاصيل رحلتك من لحظة التفكير حتى العودة"
+      },
+      
+      // 🌟 GALLERY MEDIA MOCK DATA CONFIGURATION 🌟
+      // يجب وضع ملفاتك الفعلية في مجلد /media/
+      galleryMedia: [
+          { type: 'photo', url: 'media/image1.jpg', alt: 'صورة من الحرم المكي', caption: 'صورة من الحرم المكي', filter: 'photo' },
+          { type: 'photo', url: 'media/image2.jpg', alt: 'فندق في المدينة المنورة', caption: 'فندق الإقامة 4 نجوم', filter: 'trip' },
+          { type: 'video', url: 'media/video1.mp4', alt: 'فيديو لرحلة عمرة', caption: 'تغطية فيديو لرحلتنا المميزة', filter: 'video' },
+          { type: 'photo', url: 'media/image3.jpg', alt: 'معالم المدينة المنورة', caption: 'زيارة المعالم التاريخية', filter: 'trip' },
+          { type: 'photo', url: 'media/image4.jpg', alt: 'مجموعة المعتمرين', caption: 'صورة جماعية للمعتمرين', filter: 'photo' },
+          { type: 'video', url: 'media/video2.mp4', alt: 'فيديو للحرم النبوي', caption: 'منظر ساحر للمسجد النبوي', filter: 'video' },
+          { type: 'photo', url: 'media/image5.jpg', alt: 'تجهيز الرحلة', caption: 'تجهيزات وكالتنا للرحلة', filter: 'trip' },
+          { type: 'photo', url: 'media/image6.jpg', alt: 'مرشد ديني', caption: 'المرشد الديني يشرح المناسك', filter: 'photo' },
+      ],
+      // 🌟 END GALLERY MEDIA CONFIGURATION 🌟
+    };
+
+    // Initialize content when page loads
+    document.addEventListener('DOMContentLoaded', function() {
       const cfg = window.SHARQIA_CONFIG;
       if (!cfg) {
         console.error("❌ SHARQIA_CONFIG not loaded!");
@@ -1754,7 +2065,27 @@
       document.getElementById('whatsapp-mobile-link').href = waUrl;
       document.getElementById('hero-whatsapp').href = waUrl;
       document.getElementById('whatsapp-float').href = waUrl;
+      
+      // تحديث رابط الخريطة في الـ iframe
+      const mapIframe = document.querySelector('.map-section iframe');
+      if(mapIframe) {
+          mapIframe.src = cfg.contact.mapEmbedUrl;
+      }
 
+
+      // Populate Features
+      const featuresContainer = document.getElementById('features-container');
+      if (featuresContainer) {
+        featuresContainer.innerHTML = cfg.features.map(f => `
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas ${f.icon}"></i></div>
+            <h3>${f.title}</h3>
+            <p>${f.description}</p>
+          </div>
+        `).join('');
+      }
+
+      // Populate Packages
       const pkgGrid = document.getElementById('packages-container');
       if (pkgGrid) {
         pkgGrid.innerHTML = cfg.packages.map(p => `
@@ -1763,7 +2094,7 @@
             <div class="package-header">
               <h3>${p.name}</h3>
               <div class="package-price">${p.price}</div>
-              <p>تبدأ من</p>
+              <p>${p.description}</p>
             </div>
             <div class="package-features">
               <ul>${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
@@ -1776,6 +2107,32 @@
         `).join('');
       }
 
+      // Populate Testimonials
+      const testimonialsContainer = document.getElementById('testimonials-container');
+      if (testimonialsContainer) {
+        testimonialsContainer.innerHTML = cfg.testimonials.map(t => `
+          <div class="testimonial-card">
+            <div class="testimonial-text">"${t.text}"</div>
+            <div class="testimonial-author">
+              <div class="author-avatar">${t.avatar}</div>
+              <div class="author-info"><h4>${t.name}</h4><p>${t.location}</p></div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Populate FAQ
+      const faqContainer = document.getElementById('faq-container');
+      if (faqContainer) {
+        faqContainer.innerHTML = cfg.faq.map(f => `
+          <div class="faq-item">
+            <div class="faq-question">${f.question}<i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>${f.answer}</p></div>
+          </div>
+        `).join('');
+      }
+
+      // Populate Contact Info
       const contactInfo = document.getElementById('contact-info-list');
       if (contactInfo) {
         contactInfo.innerHTML = `
@@ -1802,6 +2159,7 @@
         `;
       }
 
+      // Populate Footer
       document.getElementById('footer-agency-name').textContent = cfg.agency.name;
       document.getElementById('copyright-text').innerHTML = `جميع الحقوق محفوظة © ${cfg.agency.copyrightYear} ${cfg.agency.name}`;
 
@@ -1813,6 +2171,13 @@
         <a href="${cfg.social.whatsapp}" target="_blank" aria-label="واتساب"><i class="fab fa-whatsapp"></i></a>
       `;
 
+      // Populate Footer Packages
+      const footerPackages = document.getElementById('footer-packages-list');
+      footerPackages.innerHTML = cfg.packages.map(p => `
+        <li><a href="#باقاتنا">${p.name}</a></li>
+      `).join('');
+
+      // Populate Footer Contact
       document.getElementById('footer-contact-list').innerHTML = `
         <li><i class="fas fa-map-marker-alt"></i> ${cfg.contact.address}</li>
         <li><i class="fas fa-phone-alt"></i> ${cfg.contact.phone}</li>
@@ -1820,7 +2185,106 @@
         <li><i class="fas fa-envelope"></i> ${cfg.contact.email}</li>
       `;
 
-      // --- CHATBOT LOGIC START ---
+      // Populate Hero Section
+      document.getElementById('hero-title').textContent = cfg.hero.title;
+      document.getElementById('hero-subtitle').textContent = cfg.hero.subtitle;
+
+      // Populate Package Select in Contact Form
+      const packageSelect = document.getElementById('package');
+      packageSelect.innerHTML = '<option>اختر الباقة المناسبة</option>' + 
+        cfg.packages.map(p => `<option>${p.name}</option>`).join('');
+
+      // 🌟 --- GALLERY MEDIA LOGIC START --- 🌟
+      const galleryGrid = document.getElementById('drive-gallery-grid');
+      const galleryTabs = document.querySelectorAll('.gallery-tab');
+      let allMedia = cfg.galleryMedia; // Use the configured media data
+
+      function renderMedia(mediaArray) {
+          galleryGrid.innerHTML = mediaArray.map(item => {
+              let mediaElement, playButton = '';
+              const isVideo = item.type === 'video';
+
+              if (isVideo) {
+                  // يستخدم اسم ملف الفيديو كنقطة بداية للبوستر (يجب توفر videoX.jpg)
+                  const posterUrl = item.url.replace('.mp4', '.jpg') || '';
+                  mediaElement = `<video src="${item.url}" poster="${posterUrl}" alt="${item.alt}" loading="lazy" muted></video>`;
+                  playButton = `<div class="media-play-btn"><i class="fas fa-play"></i></div>`;
+              } else {
+                  mediaElement = `<img src="${item.url}" alt="${item.alt}" loading="lazy">`;
+              }
+
+              return `
+                  <div class="gallery-item" data-type="${item.type}" data-filter="${item.filter}">
+                      ${mediaElement}
+                      ${playButton}
+                      <div class="gallery-overlay">
+                          <h4>${item.caption}</h4>
+                          <p>${item.alt}</p>
+                      </div>
+                  </div>
+              `;
+          }).join('');
+          
+          // Add event listeners for video play/pause
+          document.querySelectorAll('.media-play-btn').forEach(button => {
+              button.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  const item = button.closest('.gallery-item');
+                  const video = item.querySelector('video');
+                  if (video.paused) {
+                      video.play();
+                      video.muted = false; // تشغيل الصوت عند الضغط
+                      button.innerHTML = '<i class="fas fa-pause"></i>';
+                  } else {
+                      video.pause();
+                      video.muted = true; // كتم الصوت عند الإيقاف
+                      button.innerHTML = '<i class="fas fa-play"></i>';
+                  }
+              });
+          });
+          
+          // Pause videos when item is not hovered/active (optional: for better mobile perf)
+          document.querySelectorAll('.gallery-item video').forEach(video => {
+              video.addEventListener('pause', () => {
+                  const button = video.closest('.gallery-item').querySelector('.media-play-btn');
+                  if (button) button.innerHTML = '<i class="fas fa-play"></i>';
+              });
+              video.addEventListener('play', () => {
+                  const button = video.closest('.gallery-item').querySelector('.media-play-btn');
+                  if (button) button.innerHTML = '<i class="fas fa-pause"></i>';
+              });
+          });
+      }
+
+      function filterMedia(filter) {
+          document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+          // تأكد من أن الزر الحالي موجود قبل إضافة الكلاس النشط
+          const activeTab = document.querySelector(`.gallery-tab[data-filter="${filter}"]`);
+          if (activeTab) {
+              activeTab.classList.add('active');
+          }
+
+          const filtered = filter === 'all' 
+              ? allMedia 
+              : allMedia.filter(item => item.filter === filter || item.type === filter);
+          
+          renderMedia(filtered);
+      }
+      
+      // Initialize tabs
+      galleryTabs.forEach(tab => {
+          tab.addEventListener('click', (e) => {
+              const filter = e.target.getAttribute('data-filter');
+              filterMedia(filter);
+          });
+      });
+
+      // Initial render (show all)
+      renderMedia(allMedia);
+      // 🌟 --- GALLERY MEDIA LOGIC END --- 🌟
+
+
+      // --- CHATBOT LOGIC START (Kept the same) ---
       const chatbotMessages = document.getElementById('chatbotMessages');
       const chatbotInput = document.getElementById('chatbotInput');
       const chatbotSend = document.getElementById('chatbotSend');
@@ -1864,12 +2328,12 @@
               // رسالة ترحيب Modular باستخدام اسم الوكالة
               text: () => `السلام عليكم، أنا مساعدك الآلي من وكالة **${cfg.agency.name}**.
               \n\n${cfg.chatbot.welcome}`,
-              replies: ['الباقات المتاحة', 'الأسعار', 'معلومات الاتصال']
+              replies: cfg.chatbot.quickReplies.initial
           },
           // الرد الخاص على التحية
           'السلام عليكم': {
               text: () => `وعليكم السلام ورحمة الله وبركاته. كيف يمكنني مساعدتك اليوم في رحلتك الروحانية؟`,
-              replies: ['الباقات المتاحة', 'معلومات الاتصال', 'خطوات الحجز']
+              replies: cfg.chatbot.quickReplies.initial
           },
           'الباقات المتاحة': {
               text: () => {
@@ -1879,7 +2343,7 @@
 • ${cfg.packages[2].name} - ${cfg.packages[2].price}
 الباقة المميزة هي الأكثر شيوعاً بين عملائنا.`;
               },
-              replies: ['الأسعار', 'خطوات الحجز', 'الوثائق المطلوبة']
+              replies: cfg.chatbot.quickReplies.packages
           },
           'الأسعار': {
               text: () => {
@@ -1889,7 +2353,7 @@
 • الباقة الفاخرة: ${cfg.packages[2].price}
 للحصول على عرض دقيق يرجى التواصل معنا عبر واتساب.`;
               },
-              replies: ['الباقات المتاحة', 'هل توفرون التقسيط؟', 'معلومات الاتصال']
+              replies: cfg.chatbot.quickReplies.prices
           },
           'الوثائق المطلوبة': {
               text: () => `الوثائق المطلوبة للحصول على تأشيرة العمرة:
@@ -1897,7 +2361,7 @@
 • صورتان شخصيتان حديثتان بخلفية بيضاء
 • استمارة طلب تأشيرة العمرة
 • شهادة التطعيم حسب متطلبات الصحة`,
-              replies: ['خطوات الحجز', 'معلومات الاتصال', 'هل يمكنني الإلغاء؟']
+              replies: cfg.chatbot.quickReplies.documents
           },
           'معلومات الاتصال': {
               text: () => {
@@ -1908,7 +2372,7 @@
 📍 العنوان: ${cfg.contact.address}
 ${cfg.contact.workingHours}`;
               },
-              replies: ['الباقات المتاحة', 'خدماتنا', 'شكرا لك']
+              replies: cfg.chatbot.quickReplies.contact
           },
           'خدماتنا': {
               text: () => `نقدم خدمات متكاملة تشمل:
@@ -1918,7 +2382,7 @@ ${cfg.contact.workingHours}`;
 • النقل الداخلي بين المشاعر
 • مرشدين دينيين متخصصين
 • دعم ومساندة طوال الرحلة`,
-              replies: ['الباقات المتاحة', 'خطوات الحجز', 'هل يوجد مرشد ديني؟']
+              replies: cfg.chatbot.quickReplies.services
           },
           'خطوات الحجز': {
               text: () => `خطوات سهلة لتأمين عمرتك:
@@ -1927,7 +2391,7 @@ ${cfg.contact.workingHours}`;
 3. تسليم المستندات المطلوبة
 4. استلام التأشيرة خلال 24-48 ساعة
 5. بدء رحلتك الروحية`,
-              replies: ['الباقات المتاحة', 'الوثائق المطلوبة', 'معلومات الاتصال']
+              replies: cfg.chatbot.quickReplies.booking
           },
           'هل يمكنني الإلغاء؟': {
               text: () => `نعم، يمكن تعديل أو إلغاء الحجز حسب الشروط والأحكام الموضحة في عقد الحجز. يرجى التواصل مباشرة مع فريقنا لمزيد من التفاصيل.`,
@@ -1950,7 +2414,7 @@ ${cfg.contact.workingHours}`;
                   return `${cfg.chatbot.fallback}
 يرجى اختيار أحد الخيارات التالية للمساعدة:`;
               },
-              replies: ['الباقات المتاحة', 'الوثائق المطلوبة', 'معلومات الاتصال', 'خدماتنا']
+              replies: cfg.chatbot.quickReplies.initial
           }
       };
 
@@ -2050,9 +2514,9 @@ ${cfg.contact.workingHours}`;
       });
       
       chatbotBtn.addEventListener('click', () => {
-        chatbotWin.style.display = chatbotWin.style.display === 'flex' ? 'none' : 'flex';
+        chatbotWin.classList.toggle('active'); // Use class toggle for CSS 3D transition
         
-        if (chatbotWin.style.display === 'flex') {
+        if (chatbotWin.classList.contains('active')) {
             if (chatbotMessages.children.length === 0) { 
                 const welcomeData = knowledgeBase['initial'];
                 // Execute the function to get the dynamic text
@@ -2062,7 +2526,7 @@ ${cfg.contact.workingHours}`;
       });
 
       chatbotClose.addEventListener('click', () => {
-        chatbotWin.style.display = 'none';
+        chatbotWin.classList.remove('active');
       });
       // --- CHATBOT LOGIC END ---
       
@@ -2140,22 +2604,15 @@ ${cfg.contact.workingHours}`;
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // Gallery Tabs
-      document.querySelectorAll('.gallery-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-        });
-      });
-
+      // Gallery Tabs (Using the new filterMedia function)
+      // Note: Tabs logic is now handled above within the gallery media logic
+      
       // Contact Form Handler
-      const contactForm = document.querySelector('.contact-form form');
+      const contactForm = document.getElementById('contact-form');
       
       if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
           e.preventDefault();
-          
-          const cfg = window.SHARQIA_CONFIG;
           
           const name = document.getElementById('name').value;
           const phone = document.getElementById('phone').value;
@@ -2194,7 +2651,6 @@ ${message}
         if (!btn.closest('form')) { 
           btn.addEventListener('click', function(e) {
             e.preventDefault();
-            const cfg = window.SHARQIA_CONFIG;
             const message = 'مرحباً! أرغب في الاستفسار عن باقات العمرة';
             const whatsappUrl = `https://wa.me/${cfg.contact.whatsapp}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
@@ -2215,9 +2671,33 @@ ${message}
       }, { threshold: 0.3 });
 
       observer.observe(mapContainer);
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return; // Ignore bare '#' links
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Adjust scroll position to account for fixed header
+                const headerHeight = document.getElementById('mainHeader').offsetHeight;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile nav if open
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+      });
     });
   </script>
-
-
 </body>
 </html>
