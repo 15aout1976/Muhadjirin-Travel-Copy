@@ -102,6 +102,19 @@
       position: relative;
       display: inline-block;
       font-weight: 800;
+      /* NEW: 3D Animation for headers */
+      animation: title-3d 3s ease-in-out infinite alternate;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.1), 4px 4px 0 rgba(0,0,0,0.05);
+    }
+
+    /* NEW: 3D Animation keyframes */
+    @keyframes title-3d {
+      0% {
+        transform: perspective(500px) rotateX(10deg) translateY(0);
+      }
+      100% {
+        transform: perspective(500px) rotateX(10deg) translateY(-5px);
+      }
     }
 
     .section-title h2:after {
@@ -218,6 +231,24 @@
     .logo h1 {
       font-size: 2rem;
       font-weight: 800;
+      /* NEW: Pulsing animation for agency name */
+      animation: agency-pulse 2s infinite;
+    }
+
+    /* NEW: Pulsing animation for agency name */
+    @keyframes agency-pulse {
+      0% {
+        transform: scale(1);
+        text-shadow: 0 0 5px rgba(255, 153, 0, 0.5);
+      }
+      50% {
+        transform: scale(1.05);
+        text-shadow: 0 0 15px rgba(255, 153, 0, 0.8);
+      }
+      100% {
+        transform: scale(1);
+        text-shadow: 0 0 5px rgba(255, 153, 0, 0.5);
+      }
     }
 
     .logo span {
@@ -503,11 +534,13 @@
       padding: 35px 30px;
       text-align: center;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       border: 1px solid #f0f0f0;
       position: relative;
       overflow: hidden;
-      transform: none; /* إلغاء الـ 3D هنا */
+      /* 3D Transform Setup */
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
     .feature-card::before {
@@ -517,18 +550,14 @@
       left: 0;
       right: 0;
       bottom: 0;
-      /* --- التعديل: استخدام الشعار الفعلي كخلفية خفية في البطاقات --- */
       background-image: url('Logo.png'); 
       background-repeat: no-repeat;
       background-position: center;
-      /* تم تصغير الشعار ليلائم البطاقة */
       background-size: 80%; 
-      /* تقليل الشفافية لجعله 'خفياً' */
       opacity: 0.08; 
       z-index: 0;
-      /* إضافة انتقال للحركة */
       transition: transform 0.6s ease-out, opacity 0.6s ease;
-      transform: scale(1);
+      transform: scale(1) translateZ(-50px);
     }
 
     .feature-card > * {
@@ -537,14 +566,13 @@
     }
 
     .feature-card:hover {
-      /* تأثير الحركة 3D على البطاقة نفسها */
-      transform: translateY(-12px); /* تحويله إلى تأثير 2D */
-      box-shadow: 0 18px 40px rgba(0, 45, 98, 0.12);
+      /* 3D Animation on Hover */
+      transform: translateY(-12px) rotateX(5deg) rotateY(-5deg) translateZ(20px);
+      box-shadow: 0 25px 50px rgba(0, 45, 98, 0.15);
     }
     
     .feature-card:hover::before {
-      /* حركة خفية للشعار داخل البطاقة عند التحويم */
-      transform: scale(1.1) rotate(5deg); 
+      transform: scale(1.1) rotate(5deg) translateZ(-30px); 
       opacity: 0.15;
     }
 
@@ -564,7 +592,7 @@
     }
 
     .feature-card:hover .feature-icon {
-      transform: scale(1.1) rotateY(0deg); /* تعديل تأثير 3D إلى تأثير Scale عادي */
+      transform: scale(1.1) rotateY(180deg);
       background: linear-gradient(135deg, rgba(0, 45, 98, 0.2), rgba(255, 153, 0, 0.25));
     }
 
@@ -594,11 +622,13 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
       transition: all 0.4s ease;
       position: relative;
-      transform: none; /* إلغاء الـ 3D هنا */
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
     .package-card:hover {
-      transform: translateY(-12px); /* تحويله إلى تأثير 2D */
+      /* NEW: Enhanced 3D effect for package cards */
+      transform: translateY(-12px) rotateX(5deg) rotateY(-5deg);
       box-shadow: 0 20px 50px rgba(0, 45, 98, 0.18);
     }
 
@@ -655,7 +685,7 @@
     }
 
     .package-card.featured:hover {
-      transform: translateY(-12px) scale(1.06); /* تحويله إلى تأثير 2D */
+      transform: translateY(-12px) scale(1.06) rotateX(5deg) rotateY(-5deg);
     }
 
     .badge {
@@ -761,10 +791,13 @@
       position: relative;
       border-top: 4px solid var(--secondary);
       transition: all 0.4s ease;
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
     .testimonial-card:hover {
-      transform: translateY(-10px) rotateX(0deg); /* تعديل تأثير 3D إلى تأثير 2D */
+      /* NEW: Enhanced 3D effect for testimonial cards */
+      transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
@@ -822,7 +855,7 @@
       font-size: 1rem;
     }
 
-    /* Enhanced Media Gallery */
+    /* Enhanced Media Gallery - UPDATED */
     .media-gallery {
       padding: 100px 0;
       background: white;
@@ -875,7 +908,7 @@
     }
 
     .gallery-item:hover {
-      transform: translateY(-8px) rotateX(0deg) rotateY(0deg); /* تعديل تأثير 3D إلى تأثير 2D */
+      transform: translateY(-8px);
       box-shadow: 0 15px 30px rgba(0, 45, 98, 0.2);
     }
 
@@ -945,9 +978,123 @@
       transform: translate(-50%, -50%) scale(1.15);
     }
 
+    .video-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
     .gallery-load-more {
       text-align: center;
       margin-top: 45px;
+    }
+
+    /* Carousel Modal Styles - NEW */
+    .carousel-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-container {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      width: auto;
+      height: auto;
+    }
+
+    .carousel-slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-slide.active {
+      display: block;
+    }
+
+    .carousel-slide img, .carousel-slide video {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+
+    .carousel-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 16px;
+      transition: background 0.3s;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: white;
+    }
+
+    .media-info {
+      color: white;
+      padding: 16px;
+      text-align: center;
     }
 
     /* Enhanced FAQ Section */
@@ -1391,8 +1538,13 @@
       
       /* يجب تعديل مكان نافذة الشات بوت عند وضع الزر في اليمين */
       .chatbot-window {
-          right: 0; /* يبدأ من يمين الزر */
+          right: 20px; /* تم التعديل: تثبيت الموضع ليكون 20px من اليمين */
           left: auto;
+          /* NEW: Fix chatbot window positioning on mobile */
+          bottom: 80px;
+          width: calc(100vw - 40px); /* Full width minus margins */
+          max-width: 340px;
+          height: 450px;
       }
       
       .scroll-top { 
@@ -1419,6 +1571,31 @@
       .footer-logo-container {
            justify-content: center;
       }
+      
+      /* NEW: Fix for chatbot input on mobile */
+      .chatbot-input {
+        padding: 12px;
+      }
+      
+      .chatbot-input input {
+        padding: 12px 16px;
+      }
+      
+      .chatbot-messages {
+        padding: 15px;
+      }
+      
+      /* NEW: Disable 3D effects on mobile for better performance */
+      .feature-card:hover,
+      .package-card:hover,
+      .testimonial-card:hover {
+        transform: translateY(-8px);
+      }
+      
+      /* Gallery responsive */
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 576px) {
@@ -1432,15 +1609,17 @@
       
       /* 🌟 إصلاح عرض Chatbot على الجوال 🌟 */
       .chatbot-window {
-        width: 90%;
+        width: calc(100% - 40px); /* تم التعديل: استخدام 100% - 40px */
         max-width: 340px;
-        right: 15px; /* تثبيت الموضع ليكون في يمين الشاشة مع هامش */
+        right: 20px; /* تم التعديل: تثبيت الموضع ليكون 20px من اليمين */
         left: auto;
+        /* NEW: Adjust height for smaller screens */
+        height: 400px;
       }
       /* 🌟 نهاية إصلاح عرض Chatbot على الجوال 🌟 */
     }
     
-    /* ... Chatbot window CSS remains the same ... */
+    /* Chatbot window CSS */
     .chatbot-header {
       background: linear-gradient(135deg, var(--primary), var(--gradient-end));
       color: white;
@@ -1693,7 +1872,10 @@
         <button class="gallery-tab" data-filter="trip">رحلات العمرة</button>
       </div>
       <div class="gallery-grid" id="drive-gallery-grid">
+        <div class="gallery-loading">
+          <p>جاري تحميل الوسائط...</p>
         </div>
+      </div>
       <div class="gallery-load-more">
         <button class="cta-button" id="load-more-btn" style="display:none;">شاهد المزيد</button>
       </div>
@@ -1822,228 +2004,32 @@
     </div>
   </div>  
   
+  <!-- Carousel Modal -->
+  <div class="carousel-modal" id="carouselModal">
+    <button class="close-btn" id="closeCarousel">&times;</button>
+    <div class="carousel-container">
+      <div class="carousel-slides" id="carouselSlides">
+        <!-- Slides will be dynamically inserted here -->
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn">&#10094;</button>
+        <button class="carousel-btn" id="nextBtn">&#10095;</button>
+      </div>
+      <div class="carousel-dots" id="carouselDots">
+        <!-- Dots will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="Config.js"></script>
+
   <script>
-    // Configuration File for Almohajirin Travel Agency Website
-    window.SHARQIA_CONFIG = {
-      // AGENCY INFORMATION
-      agency: {
-        name: "وكالة المهاجرين ترافل",
-        tagline: "معتمرونا... أمانة بين أيدينا",
-        copyrightYear: new Date().getFullYear(),
-        description: "وكالة سفر متخصصة في تنظيم رحلات العمرة بأعلى معايير الجودة والراحة"
-      },
-
-      // SEO SETTINGS
-      seo: {
-        title: "وكالة المهاجرين ترافل | رحلات العمرة المميزة",
-        description: "احجز رحلة العمرة مع وكالة المهاجرين ترافل. خدمات متكاملة، أسعار تنافسية، وتجربة روحية لا تُنسى. اتصل بنا الآن!",
-        keywords: "عمرة, رحلات عمرة, حج, سياحة دينية, المهاجرين ترافل, باقات عمرة, حجز عمرة, تأشيرة عمرة"
-      },
-
-      // CONTACT INFORMATION
-      contact: {
-        phone: "+213555123456",
-        whatsapp: "213555123456", // Without + or spaces
-        email: "info@almohajirin-travel.dz",
-        address: "شارع العربي بن مهيدي، باتنة، الجزائر",
-        workingHours: "السبت - الخميس: 9:00 صباحاً - 6:00 مساءً",
-        // 🌟 رابط الخريطة الجديد: استخدم رابط تضمين (Embed API) الخاص بموقعك 🌟
-        mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.67890!2d5.203102!3d35.558774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzvEmsDZAjUw4qWsNDc2!5e0!3m2!1sen!ar!4v1634567890123!5m2!1sen!ar"
-      },
-
-      // SOCIAL MEDIA LINKS
-      social: {
-        facebook: "https://facebook.com/almohajirin.travel",
-        instagram: "https://instagram.com/almohajirin.travel",
-        tiktok: "https://tiktok.com/@almohajirin.travel",
-        whatsapp: "https://wa.me/213555123456"
-      },
-
-      // PACKAGES CONFIGURATION
-      packages: [
-        {
-          id: 1,
-          name: "الباقة الأساسية",
-          price: "85,000 دج",
-          isFeatured: false,
-          description: "باقة اقتصادية مناسبة للعائلات",
-          features: [
-            "تأشيرة العمرة الإلكترونية",
-            "تذاكر طيران ذهاب وعودة",
-            "إقامة في فندق 3 نجوم (مكة والمدينة)",
-            "النقل بين المطار والفندق",
-            "وجبة إفطار يومية",
-            "تأمين صحي شامل",
-            "مرشد ديني مع المجموعة"
-          ]
-        },
-        {
-          id: 2,
-          name: "الباقة المميزة",
-          price: "120,000 دج",
-          isFeatured: true,
-          description: "الباقة الأكثر طلباً مع خدمات إضافية",
-          features: [
-            "تأشيرة العمرة الإلكترونية",
-            "تذاكر طيران درجة سياحية",
-            "إقامة في فندق 4 نجوم قريب من الحرم",
-            "النقل الفاخر بين المدن والمطارات",
-            "وجبتان يوميًا (إفطار وعشاء)",
-            "تأمين صحي شامل وسارية المفعول",
-            "مرشد ديني متخصص",
-            "زيارات للمعالم التاريخية",
-            "دعم متواصل 24/7"
-          ]
-        },
-        {
-          id: 3,
-          name: "الباقة الفاخرة",
-          price: "180,000 دج",
-          isFeatured: false,
-          description: "تجربة VIP مع أفضل الخدمات",
-          features: [
-            "تأشيرة العمرة الإلكترونية سريعة",
-            "تذاكر طيران درجة رجال الأعمال",
-            "إقامة في فندق 5 نجوم إطلالة على الحرم",
-            "سيارات خاصة فاخرة للتنقل",
-            "ثلاث وجبات فاخرة يوميًا",
-            "تأمين صحي VIP شامل",
-            "مرشد ديني خاص للمجموعة",
-            "برنامج سياحي متكامل",
-            "غرف مطلة على الحرم",
-            "خدمة استقبال خاصة في المطار",
-            "دعم شخصي مخصص 24/7"
-          ]
-        }
-      ],
-
-      // CHATBOT CONFIGURATION
-      chatbot: {
-        welcome: "أهلاً وسهلاً بك! 🌙\n\nكيف يمكنني مساعدتك اليوم في رحلتك الروحانية؟\nيمكنك الاستفسار عن الباقات، الأسعار، أو أي معلومات أخرى.",
-        
-        fallback: "عذراً، لم أفهم سؤالك تماماً. 🤔\n\nدعني أساعدك بشكل أفضل!",
-        
-        quickReplies: {
-          initial: ['الباقات المتاحة', 'الأسعار', 'معلومات الاتصال'],
-          packages: ['الأسعار', 'خطوات الحجز', 'الوثائق المطلوبة'],
-          prices: ['الباقات المتاحة', 'هل توفرون التقسيط؟', 'معلومات الاتصال'],
-          documents: ['خطوات الحجز', 'معلومات الاتصال', 'هل يمكنني الإلغاء؟'],
-          contact: ['الباقات المتاحة', 'خدماتنا', 'شكرا لك'],
-          services: ['الباقات المتاحة', 'خطوات الحجز', 'هل يوجد مرشد ديني؟'],
-          booking: ['الباقات المتاحة', 'الوثائق المطلوبة', 'معلومات الاتصال']
-        }
-      },
-
-      // FEATURES CONFIGURATION
-      features: [
-        {
-          icon: "fa-award",
-          title: "خبرة طويلة",
-          description: "نتمتع بخبرة تمتد لسنوات في تنظيم رحلات العمرة باحترافية عالية"
-        },
-        {
-          icon: "fa-certificate",
-          title: "تراخيص رسمية",
-          description: "نحن شركة معتمدة من الجهات الرسمية ذات الصلة، مما يضمن لك تعاملًا آمنًا ومضمونًا"
-        },
-        {
-          icon: "fa-concierge-bell",
-          title: "خدمات متكاملة",
-          description: "نقدم باقة شاملة تشمل التأشيرات، الحجوزات، النقل، والإقامة لتوفر عليك عناء الترتيبات"
-        },
-        {
-          icon: "fa-user-friends",
-          title: "مرشدون دينيون",
-          description: "نضع بين يديك مرشدين دينيين متخصصين ليرشدوك خلال أداء المناسك"
-        },
-        {
-          icon: "fa-headset",
-          title: "دعم 24/7",
-          description: "فريق دعم متواجد على مدار الساعة لمساعدتك في أي استفسار أو طوارئ خلال رحلتك"
-        },
-        {
-          icon: "fa-hand-holding-usd",
-          title: "أسعار تنافسية",
-          description: "نقدم أفضل الخدمات بأسعار تنافسية مع مرونة في الدفع وتقسيط ميسر"
-        }
-      ],
-
-      // TESTIMONIALS CONFIGURATION
-      testimonials: [
-        {
-          name: "فاطمة أحمد",
-          location: "باتنة",
-          avatar: "ف",
-          text: "كنت خائفة من أول مرة أذهب فيها للعمرة، لكني فضلت التعامل مع وكالة المهاجرين ترافل، وكانت تجربة لن أنساها أبدًا..."
-        },
-        {
-          name: "محمد عبد الله",
-          location: "المسيلة",
-          avatar: "م",
-          text: "أداء العمرة مع وكالة المهاجرين ترافل كان حلماً تحقق. شعرت أنني في بيت، لا في رحلة..."
-        },
-        {
-          name: "عبد الصمد محمود",
-          location: "الجزائر العاصمة",
-          avatar: "ع",
-          text: "رحلة العمرة مع وكالة المهاجرين ترافل كانت من أفضل التجارب في حياتي..."
-        }
-      ],
-
-      // FAQ CONFIGURATION
-      faq: [
-        {
-          question: "ما هي الوثائق المطلوبة للحصول على تأشيرة العمرة؟",
-          answer: "الوثائق المطلوبة هي: جواز سفر ساري المفعول لمدة 6 أشهر على الأقل، صورتان شخصيتان حديثتان بخلفية بيضاء، استمارة طلب التأشيرة، وشهادة التطعيم حسب متطلبات وزارة الصحة."
-        },
-        {
-          question: "كم تستغرق مدة استخراج تأشيرة العمرة؟",
-          answer: "عادةً ما تستغرق عملية استخراج التأشيرة من 3 إلى 7 أيام عمل من تاريخ استلام كافة المستندات المطلوبة."
-        },
-        {
-          question: "هل يمكنني تعديل أو إلغاء الحجز؟",
-          answer: "نعم، يمكن تعديل أو إلغاء الحجز حسب الشروط والأحكام المتفق عليها في عقد الحجز. يرجى التواصل معنا مباشرة لمعرفة التفاصيل."
-        },
-        {
-          question: "ما هي مدة رحلة العمرة النموذجية؟",
-          answer: "مدة الرحلة النموذجية تتراوح بين 10 إلى 15 يومًا، تشمل الإقامة في مكة المكرمة والمدينة المنورة."
-        },
-        {
-          question: "هل تقدمون خدمة التقسيط؟",
-          answer: "نعم، نقدم خيارات متعددة للدفع تشمل الدفع الكامل والتقسيط الميسر. يرجى التواصل معنا لمعرفة خطط التقسيط المتاحة."
-        },
-        {
-          question: "ما هي مزايا السفر مع مجموعة؟",
-          answer: "السفر مع مجموعة يوفر لك مرشدًا دينيًا مرافقًا، أسعار أفضل، تنظيم احترافي، ورفقة طيبة خلال الرحلة الروحانية."
-        }
-      ],
-
-      // HERO SECTION CONFIGURATION
-      hero: {
-        title: "معتمرونا... أمانة بين أيدينا",
-        subtitle: "نحوّل حلمك بأداء العمرة إلى واقع ميسر مع خدمات شاملة تغطي كل تفاصيل رحلتك من لحظة التفكير حتى العودة"
-      },
-      
-      // 🌟 GALLERY MEDIA MOCK DATA CONFIGURATION 🌟
-      // يجب وضع ملفاتك الفعلية في مجلد /media/
-      galleryMedia: [
-          { type: 'photo', url: 'media/image1.jpg', alt: 'صورة من الحرم المكي', caption: 'صورة من الحرم المكي', filter: 'photo' },
-          { type: 'photo', url: 'media/image2.jpg', alt: 'فندق في المدينة المنورة', caption: 'فندق الإقامة 4 نجوم', filter: 'trip' },
-          { type: 'video', url: 'media/video1.mp4', alt: 'فيديو لرحلة عمرة', caption: 'تغطية فيديو لرحلتنا المميزة', filter: 'video' },
-          { type: 'photo', url: 'media/image3.jpg', alt: 'معالم المدينة المنورة', caption: 'زيارة المعالم التاريخية', filter: 'trip' },
-          { type: 'photo', url: 'media/image4.jpg', alt: 'مجموعة المعتمرين', caption: 'صورة جماعية للمعتمرين', filter: 'photo' },
-          { type: 'video', url: 'media/video2.mp4', alt: 'فيديو للحرم النبوي', caption: 'منظر ساحر للمسجد النبوي', filter: 'video' },
-          { type: 'photo', url: 'media/image5.jpg', alt: 'تجهيز الرحلة', caption: 'تجهيزات وكالتنا للرحلة', filter: 'trip' },
-          { type: 'photo', url: 'media/image6.jpg', alt: 'مرشد ديني', caption: 'المرشد الديني يشرح المناسك', filter: 'photo' },
-      ],
-      // 🌟 END GALLERY MEDIA CONFIGURATION 🌟
-    };
-
     // Initialize content when page loads
     document.addEventListener('DOMContentLoaded', function() {
+      // Config data is expected to be loaded in window.SHARQIA_CONFIG
       const cfg = window.SHARQIA_CONFIG;
       if (!cfg) {
-        console.error("❌ SHARQIA_CONFIG not loaded!");
+        console.error("❌ SHARQIA_CONFIG not loaded! Ensure Config.js is accessible.");
         return;
       }
       
@@ -2071,7 +2057,6 @@
       if(mapIframe) {
           mapIframe.src = cfg.contact.mapEmbedUrl;
       }
-
 
       // Populate Features
       const featuresContainer = document.getElementById('features-container');
@@ -2194,84 +2179,259 @@
       packageSelect.innerHTML = '<option>اختر الباقة المناسبة</option>' + 
         cfg.packages.map(p => `<option>${p.name}</option>`).join('');
 
-      // 🌟 --- GALLERY MEDIA LOGIC START --- 🌟
+      // 🌟 --- NEW DYNAMIC GALLERY LOGIC START --- 🌟
       const galleryGrid = document.getElementById('drive-gallery-grid');
       const galleryTabs = document.querySelectorAll('.gallery-tab');
-      let allMedia = cfg.galleryMedia; // Use the configured media data
+      const carouselModal = document.getElementById('carouselModal');
+      const carouselSlides = document.getElementById('carouselSlides');
+      const carouselDots = document.getElementById('carouselDots');
+      const closeCarousel = document.getElementById('closeCarousel');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      // --- CONFIGURATION (REPO MUST BE PUBLIC) ---
+      const GITHUB_USERNAME = '15aout1976'; 
+      const REPO_NAME = 'Muhadjirin-Travel-Copy';
+      const MEDIA_FOLDER = 'media'; 
+      const BRANCH_NAME = 'main'; 
+      // --------------------------------------------
 
-      function renderMedia(mediaArray) {
-          galleryGrid.innerHTML = mediaArray.map(item => {
-              let mediaElement, playButton = '';
-              const isVideo = item.type === 'video';
+      let mediaItems = [];
+      let currentSlideIndex = 0;
 
-              if (isVideo) {
-                  // يستخدم اسم ملف الفيديو كنقطة بداية للبوستر (يجب توفر videoX.jpg)
-                  const posterUrl = item.url.replace('.mp4', '.jpg') || '';
-                  mediaElement = `<video src="${item.url}" poster="${posterUrl}" alt="${item.alt}" loading="lazy" muted></video>`;
-                  playButton = `<div class="media-play-btn"><i class="fas fa-play"></i></div>`;
-              } else {
-                  mediaElement = `<img src="${item.url}" alt="${item.alt}" loading="lazy">`;
+      // Step 1: Get the SHA of the latest commit on the main branch
+      async function getLatestCommitSha() {
+          const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/branches/${BRANCH_NAME}`;
+          
+          try {
+              const response = await fetch(url, { headers: { 'User-Agent': 'Media-Gallery-App' } });
+              if (!response.ok) throw new Error(`Failed to get branch data: ${response.statusText}`);
+              const branchData = await response.json();
+              return branchData.commit.sha;
+          } catch (error) {
+              console.error("Error fetching commit SHA:", error);
+              throw new Error("Could not retrieve latest commit for the repository.");
+          }
+      }
+
+      // Step 2: Use the SHA to get the contents (tree) of the media folder
+      async function fetchMediaList() {
+          try {
+              const commitSha = await getLatestCommitSha();
+              const treeUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/git/trees/${commitSha}?recursive=1`;
+              
+              const treeResponse = await fetch(treeUrl, { headers: { 'User-Agent': 'Media-Gallery-App' } });
+              if (!treeResponse.ok) throw new Error(`Failed to get tree data: ${treeResponse.statusText}`);
+              
+              const treeData = await treeResponse.json();
+              
+              const files = treeData.tree.filter(item => 
+                  item.path.startsWith(MEDIA_FOLDER + '/') && item.type === 'blob'
+              );
+
+              // Use GitHub Pages base URL for reliable raw content access
+              const rawContentBaseUrl = `https://${GITHUB_USERNAME}.github.io/${REPO_NAME}/${MEDIA_FOLDER}/`;
+
+              mediaItems = files
+                  .map((file, index) => {
+                      const fileName = file.path.substring(MEDIA_FOLDER.length + 1); 
+                      const ext = fileName.split('.').pop().toLowerCase();
+                      // Check common image and video extensions
+                      const isVideo = (['mp4', 'webm', 'ogg', 'mov']).includes(ext);
+                      
+                      let src = rawContentBaseUrl + fileName;
+                      
+                      // Extract filename without extension for caption
+                      const nameWithoutExt = fileName.split('.').slice(0, -1).join('.');
+                      // Convert filename to readable format (replace underscores and dashes with spaces)
+                      const readableName = nameWithoutExt.replace(/[_-]/g, ' ');
+                      
+                      // Determine filter based on file type and folder structure
+                      let filter = 'photo'; // Default to photo
+                      if (isVideo) filter = 'video';
+                      // Check if file is in a subfolder that indicates trip
+                      if (file.path.includes('trip') || file.path.includes('journey') || 
+                          file.path.includes('umrah') || file.path.includes('pilgrimage')) {
+                          filter = 'trip';
+                      }
+                      
+                      return {
+                          id: index + 1,
+                          type: isVideo ? 'video' : 'image',
+                          src: src,
+                          title: readableName,
+                          filter: filter
+                      };
+                  })
+                  // Optional: Sort by type (images first) or filename
+                  .sort((a, b) => a.type.localeCompare(b.type)); 
+              
+              if (mediaItems.length === 0) {
+                  galleryGrid.innerHTML = '<p>لم يتم العثور على وسائط في المجلد.</p>';
+                  return;
               }
 
-              return `
-                  <div class="gallery-item" data-type="${item.type}" data-filter="${item.filter}">
-                      ${mediaElement}
-                      ${playButton}
+              populateGallery();
+          } catch (error) {
+              console.error("Failed to load media list securely:", error);
+              galleryGrid.innerHTML = '<p>خطأ في تحميل المعرض. يرجى التأكد من أن مستودع GitHub عام وتكوين المتغيرات صحيح.</p>';
+          }
+      }
+      
+      // Populate gallery with media items
+      function populateGallery() {
+          galleryGrid.innerHTML = '';
+          mediaItems.forEach((item, index) => {
+              const galleryItem = document.createElement('div');
+              galleryItem.className = 'gallery-item';
+              galleryItem.dataset.index = index;
+              galleryItem.dataset.type = item.type;
+              galleryItem.dataset.filter = item.filter;
+              
+              if (item.type === 'image') {
+                  galleryItem.innerHTML = `
+                      <img src="${item.src}" alt="${item.title}" loading="lazy">
                       <div class="gallery-overlay">
-                          <h4>${item.caption}</h4>
-                          <p>${item.alt}</p>
+                          <h4>${item.title}</h4>
+                          <p>رحلة عمرة مميزة</p>
                       </div>
-                  </div>
-              `;
-          }).join('');
-          
-          // Add event listeners for video play/pause
-          document.querySelectorAll('.media-play-btn').forEach(button => {
-              button.addEventListener('click', (e) => {
-                  e.stopPropagation();
-                  const item = button.closest('.gallery-item');
-                  const video = item.querySelector('video');
-                  if (video.paused) {
-                      video.play();
-                      video.muted = false; // تشغيل الصوت عند الضغط
-                      button.innerHTML = '<i class="fas fa-pause"></i>';
-                  } else {
-                      video.pause();
-                      video.muted = true; // كتم الصوت عند الإيقاف
-                      button.innerHTML = '<i class="fas fa-play"></i>';
-                  }
-              });
+                  `;
+              } else if (item.type === 'video') {
+                  const videoExt = item.src.split('.').pop().toLowerCase();
+                  const mimeType = videoExt === 'mov' ? 'video/quicktime' : `video/${videoExt}`;
+                  galleryItem.innerHTML = `
+                      <video loop muted playsinline> 
+                          <source src="${item.src}" type="${mimeType}">
+                          متصفحك لا يدعم تشغيل الفيديو.
+                      </video>
+                      <div class="video-indicator">فيديو</div>
+                      <div class="media-play-btn"><i class="fas fa-play"></i></div>
+                      <div class="gallery-overlay">
+                          <h4>${item.title}</h4>
+                          <p>رحلة عمرة مميزة</p>
+                      </div>
+                  `;
+              }
+              
+              galleryItem.addEventListener('click', () => openCarousel(index));
+              galleryGrid.appendChild(galleryItem);
           });
           
-          // Pause videos when item is not hovered/active (optional: for better mobile perf)
-          document.querySelectorAll('.gallery-item video').forEach(video => {
-              video.addEventListener('pause', () => {
-                  const button = video.closest('.gallery-item').querySelector('.media-play-btn');
-                  if (button) button.innerHTML = '<i class="fas fa-play"></i>';
-              });
-              video.addEventListener('play', () => {
-                  const button = video.closest('.gallery-item').querySelector('.media-play-btn');
-                  if (button) button.innerHTML = '<i class="fas fa-pause"></i>';
-              });
+          // Start video playback on the gallery grid after elements are in DOM
+          const gridVideos = galleryGrid.querySelectorAll('video');
+          gridVideos.forEach(video => {
+              // Autoplay can be tricky; try to play after a short delay
+              video.play().catch(e => console.log("Video autoplay blocked in grid.", e));
           });
       }
 
+      // Filter gallery items based on tab selection
       function filterMedia(filter) {
           document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-          // تأكد من أن الزر الحالي موجود قبل إضافة الكلاس النشط
           const activeTab = document.querySelector(`.gallery-tab[data-filter="${filter}"]`);
           if (activeTab) {
               activeTab.classList.add('active');
           }
 
-          const filtered = filter === 'all' 
-              ? allMedia 
-              : allMedia.filter(item => item.filter === filter || item.type === filter);
-          
-          renderMedia(filtered);
+          const galleryItems = document.querySelectorAll('.gallery-item');
+          galleryItems.forEach(item => {
+              if (filter === 'all' || item.dataset.filter === filter) {
+                  item.style.display = 'block';
+              } else {
+                  item.style.display = 'none';
+              }
+          });
       }
-      
-      // Initialize tabs
+
+      // Open carousel with selected media
+      function openCarousel(index) {
+          currentSlideIndex = parseInt(index);
+          carouselSlides.innerHTML = '';
+          carouselDots.innerHTML = '';
+          
+          mediaItems.forEach((item, i) => {
+              const slide = document.createElement('div');
+              slide.className = `carousel-slide ${i === currentSlideIndex ? 'active' : ''}`;
+              
+              if (item.type === 'image') {
+                  slide.innerHTML = `<img src="${item.src}" alt="${item.title}">`;
+              } else if (item.type === 'video') {
+                  const videoExt = item.src.split('.').pop().toLowerCase();
+                  const mimeType = videoExt === 'mov' ? 'video/quicktime' : `video/${videoExt}`;
+                  slide.innerHTML = `
+                      <video controls autoplay playsinline ${i === currentSlideIndex ? '' : 'muted'}> 
+                          <source src="${item.src}" type="${mimeType}">
+                          متصفحك لا يدعم تشغيل الفيديو.
+                      </video>
+                  `;
+              }
+              
+              carouselSlides.appendChild(slide);
+              
+              const dot = document.createElement('div');
+              dot.className = `dot ${i === currentSlideIndex ? 'active' : ''}`;
+              dot.dataset.index = i;
+              dot.addEventListener('click', () => goToSlide(i));
+              carouselDots.appendChild(dot);
+          });
+          
+          carouselModal.style.display = 'flex';
+          // Start playing the active video in the carousel if it's a video
+          const activeVideo = carouselSlides.querySelector('.carousel-slide.active video');
+          if(activeVideo) {
+              activeVideo.play().catch(e => console.log("Video autoplay blocked in modal.", e));
+          }
+      }
+
+      // Close carousel
+      function closeCarouselModal() {
+          carouselModal.style.display = 'none';
+          // Pause any video when the modal closes
+          const videos = carouselSlides.querySelectorAll('video');
+          videos.forEach(video => {
+              video.pause();
+              video.currentTime = 0; // Reset video position
+          });
+      }
+
+      // Navigation functions
+      function goToSlide(index) {
+          // Pause current video before changing slide
+          const currentVideo = carouselSlides.querySelector('.carousel-slide.active video');
+          if (currentVideo) currentVideo.pause();
+          
+          currentSlideIndex = index;
+          updateCarousel();
+          
+          // Play new active video
+          const newActiveVideo = carouselSlides.querySelector('.carousel-slide.active video');
+          if(newActiveVideo) {
+               newActiveVideo.play().catch(e => console.log("Video autoplay blocked after navigation.", e));
+          }
+      }
+
+      function nextSlide() {
+          goToSlide((currentSlideIndex + 1) % mediaItems.length);
+      }
+
+      function prevSlide() {
+          goToSlide((currentSlideIndex - 1 + mediaItems.length) % mediaItems.length);
+      }
+
+      function updateCarousel() {
+          const slides = carouselSlides.querySelectorAll('.carousel-slide');
+          const dots = carouselDots.querySelectorAll('.dot');
+          
+          slides.forEach((slide, i) => {
+              slide.classList.toggle('active', i === currentSlideIndex);
+          });
+          
+          dots.forEach((dot, i) => {
+              dot.classList.toggle('active', i === currentSlideIndex);
+          });
+      }
+
+      // Event listeners for gallery tabs
       galleryTabs.forEach(tab => {
           tab.addEventListener('click', (e) => {
               const filter = e.target.getAttribute('data-filter');
@@ -2279,10 +2439,32 @@
           });
       });
 
-      // Initial render (show all)
-      renderMedia(allMedia);
-      // 🌟 --- GALLERY MEDIA LOGIC END --- 🌟
+      // Event listeners for carousel
+      closeCarousel.addEventListener('click', closeCarouselModal);
+      prevBtn.addEventListener('click', prevSlide);
+      nextBtn.addEventListener('click', nextSlide);
 
+      document.addEventListener('keydown', (e) => {
+          if (carouselModal.style.display === 'flex') {
+              if (e.key === 'Escape') {
+                  closeCarouselModal();
+              } else if (e.key === 'ArrowLeft') {
+                  prevSlide();
+              } else if (e.key === 'ArrowRight') {
+                  nextSlide();
+              }
+          }
+      });
+
+      carouselModal.addEventListener('click', (e) => {
+          if (e.target === carouselModal) {
+              closeCarouselModal();
+          }
+      });
+
+      // Initialize the gallery
+      fetchMediaList();
+      // 🌟 --- NEW DYNAMIC GALLERY LOGIC END --- 🌟
 
       // --- CHATBOT LOGIC START (Kept the same) ---
       const chatbotMessages = document.getElementById('chatbotMessages');
@@ -2604,9 +2786,6 @@ ${cfg.contact.workingHours}`;
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // Gallery Tabs (Using the new filterMedia function)
-      // Note: Tabs logic is now handled above within the gallery media logic
-      
       // Contact Form Handler
       const contactForm = document.getElementById('contact-form');
       
