@@ -2004,20 +2004,17 @@
     </div>
   </div>  
   
-  <!-- Carousel Modal -->
   <div class="carousel-modal" id="carouselModal">
-    <button class="close-btn" id="closeCarousel">&times;</button>
+    <button class="close-btn" id="closeCarousel">×</button>
     <div class="carousel-container">
       <div class="carousel-slides" id="carouselSlides">
-        <!-- Slides will be dynamically inserted here -->
-      </div>
+        </div>
       <div class="carousel-nav">
-        <button class="carousel-btn" id="prevBtn">&#10094;</button>
-        <button class="carousel-btn" id="nextBtn">&#10095;</button>
+        <button class="carousel-btn" id="prevBtn">❮</button>
+        <button class="carousel-btn" id="nextBtn">❯</button>
       </div>
       <div class="carousel-dots" id="carouselDots">
-        <!-- Dots will be dynamically inserted here -->
-      </div>
+        </div>
     </div>
   </div>
 
@@ -2300,7 +2297,7 @@
                   const videoExt = item.src.split('.').pop().toLowerCase();
                   const mimeType = videoExt === 'mov' ? 'video/quicktime' : `video/${videoExt}`;
                   galleryItem.innerHTML = `
-                      <video loop muted playsinline> 
+                      <video loop muted playsinline loading="lazy"> 
                           <source src="${item.src}" type="${mimeType}">
                           متصفحك لا يدعم تشغيل الفيديو.
                       </video>
@@ -2354,6 +2351,7 @@
               slide.className = `carousel-slide ${i === currentSlideIndex ? 'active' : ''}`;
               
               if (item.type === 'image') {
+                  // Images inside carousel are already visible, no need for lazy loading here
                   slide.innerHTML = `<img src="${item.src}" alt="${item.title}">`;
               } else if (item.type === 'video') {
                   const videoExt = item.src.split('.').pop().toLowerCase();
@@ -2572,7 +2570,7 @@ ${cfg.contact.workingHours}`;
 2. اختيار الباقة المناسبة
 3. تسليم المستندات المطلوبة
 4. استلام التأشيرة خلال 24-48 ساعة
-5. بدء رحلتك الروحية`,
+5. بدء الرحلة الروحية`,
               replies: cfg.chatbot.quickReplies.booking
           },
           'هل يمكنني الإلغاء؟': {
@@ -2682,7 +2680,7 @@ ${cfg.contact.workingHours}`;
         if (!message) return;
         
         handleUserMessage(message);
-        chatbotInput.value = '';
+        chatbotInput.value = null;
       });
 
       chatbotInput.addEventListener('keypress', (e) => {
@@ -2691,7 +2689,7 @@ ${cfg.contact.workingHours}`;
           if (!message) return;
           
           handleUserMessage(message);
-          chatbotInput.value = '';
+          chatbotInput.value = null;
         }
       });
       
