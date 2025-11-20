@@ -26,10 +26,10 @@ window.SHARQIA_CONFIG = {
   // CONTACT INFORMATION
   // ============================================
   contact: {
-    phone: "+213555123456",
-    whatsapp: "213555123456", // Without + or spaces
-    email: "info@almohajirin-travel.dz",
-    address: "شارع العربي بن مهيدي، باتنة، الجزائر",
+    phone: "213560460296+",
+    whatsapp: "213560460296", // Without + or spaces
+    email: "almohajirintravel05@gmail.com",
+    address: "أمام بلدية باتنة،الزمالة،باتنة،الجزائر",
     workingHours: "السبت - الخميس: 9:00 صباحاً - 6:00 مساءً",
     mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3250.3021191624065!2d6.172828615124325!3d35.564291180119594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12f411cff7ae9c8f%3A0x378d13e91645f8a1!2sAlmohajirin%20Travel!5e0!3m2!1sen!2sdz!4v1700431680000!5m2!1sen!2sdz"
   },
@@ -41,7 +41,7 @@ window.SHARQIA_CONFIG = {
     facebook: "https://facebook.com/almohajirin.travel",
     instagram: "https://instagram.com/almohajirin.travel",
     tiktok: "https://tiktok.com/@almohajirin.travel",
-    whatsapp: "https://wa.me/213555123456"
+    whatsapp: "https://wa.me/213560460296"
   },
 
   // ============================================
